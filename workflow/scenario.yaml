@@ -34,7 +34,7 @@ expected_cases:
 measurement_boundaries:
   process_oracle:
     observes: successful exec events plus fork/clone ancestry through kernel tracepoints
-    argv_limit: 8 arguments, 47 bytes per argument
+    argv_limit: 8 arguments, 95 bytes per argument
     does_not_claim: >-
       Complete command-line capture, syscall argument completeness, file access
       completeness, a global total order across CPUs, or proof that all possible
