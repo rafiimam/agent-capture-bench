@@ -1,0 +1,47 @@
+scenario_id: python-subprocess-capture-v1
+title: Python-launched subprocess visibility
+purpose: >-
+  Compare independent kernel process-execution observations with a recorder's
+  output for a controlled workflow, focusing on git launched from Python's
+  subprocess.run(). This scenario tests successful process execution visibility;
+  it does not assert that a hook-only recorder promises OS-level process capture.
+platforms:
+  phase_1: Linux
+  phase_2: macOS (not implemented in the initial prototype)
+expected_cases:
+  - id: path_echo
+    kind: successful_exec
+    expectation: An executable resolved through PATH runs successfully.
+  - id: absolute_echo
+    kind: successful_exec
+    expectation: An executable invoked by absolute path runs successfully.
+  - id: shell_pipeline
+    kind: multi_process_pipeline
+    expectation: A shell runs a pipeline containing /bin/echo and /usr/bin/wc.
+  - id: nonzero_exit
+    kind: failed_command
+    expectation: /usr/bin/false runs and returns status 1.
+  - id: python_spawns_git
+    kind: interpreter_child_process
+    expectation: >-
+      A Python -c command calls subprocess.run(['git', 'log', '-n', '1']);
+      the resulting git process should appear in the independent kernel oracle.
+  - id: file_modification
+    kind: filesystem_effect
+    expectation: >-
+      The workflow changes a controlled file and records before/after SHA-256
+      hashes in supervisor-events.jsonl.
+measurement_boundaries:
+  process_oracle:
+    observes: successful exec events plus fork/clone ancestry through kernel tracepoints
+    argv_limit: 8 arguments, 47 bytes per argument
+    does_not_claim: >-
+      Complete command-line capture, syscall argument completeness, file access
+      completeness, a global total order across CPUs, or proof that all possible
+      system events were observed.
+  supervisor:
+    observes: named workflow steps, their return codes, and controlled file hashes
+    independent_of_bpf_oracle: true
+  recorder_under_test:
+    output: recorder-output.jsonl
+    compare_against: oracle-events.jsonl and supervisor-events.jsonl
