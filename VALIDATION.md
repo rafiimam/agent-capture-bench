@@ -1,6 +1,52 @@
 # Validation log
 
-Date: 2026-10-16
+## First real-host validation — 2026-10-20
+
+The eBPF oracle was built, loaded, and run against the core scenario on a
+real (virtualized) kernel for the first time.
+
+### Environment
+
+| Item | Value |
+|---|---|
+| Host | Multipass VM on MacBook Air M1 (Apple Silicon) |
+| Guest | Ubuntu 24.04.5 LTS (noble), aarch64 |
+| Kernel | 6.8.0-147-generic (`Linux acb 6.8.0-147-generic #147-Ubuntu SMP PREEMPT_DYNAMIC aarch64`) |
+| Clang | Ubuntu clang 18.1.3 (1ubuntu1) |
+| libbpf | libbpf-dev 1:1.3.0-2build2 (arm64) |
+
+### Portability bugs found and fixed by this validation
+
+1. **`__builtin_memset` on large structs fails the BPF build** (commit
+   f99968d). Clang's BPF backend has no memset/memcpy libcall; the builtin on
+   the 1072-byte `acb_event` (and the 776-byte `acb_argv_data`) errored with
+   *"A call to built-in function 'memset' is not supported."* Replaced with
+   explicit unrolled `__u64` word loops (`zero_event` / `copy_argv`).
+2. **Clang's loop-idiom pass resurrected the memset** (commit f40b2e7). The
+   plain zeroing loop was recognized and rewritten as a memset call, failing
+   at the store itself. All loop accesses are now `volatile`, which is exempt
+   from idiom recognition.
+
+### Core suite run (scenario python-subprocess-capture-v1)
+
+- Run directory: `.work/run-20261020T161818-12851`
+- `make`: **PASS** — `oracle.bpf.o` and the userspace loader both build.
+- `./run_experiment.sh`: **PASS** — oracle attached and collected events.
+- Oracle events: **17** (9 exec, 8 fork).
+- Supervisor: **5/5 steps passed**.
+- Observed checks: **10/10 true** — `path_echo_seen`, `absolute_echo_seen`,
+  `shell_pipeline_shell_seen`, `shell_pipeline_echo_seen`,
+  `shell_pipeline_wc_seen`, `nonzero_command_seen`, `python_probe_seen`,
+  `git_child_exec_seen`, `git_parent_is_python_probe`,
+  `file_change_recorded`. `all_oracle_checks_observed: true`.
+
+This validates the oracle for the core scenario on the environment above:
+it attaches, observes successful execs and fork ancestry, and correctly
+attributes the Python-launched `git` child. It does not yet validate the
+evasion suite (`capture-evasion-v1`) or any recorder comparison — those runs
+are recorded here as they happen.
+
+## Authoring-container checks — 2026-10-16
 
 ## Checks performed in the authoring container
 

@@ -10,7 +10,7 @@ Process-capture tools — eBPF tracers, audit pipelines, EDR sensors, determinis
 
 **AgentCaptureBench is a ground-truth benchmark for process capture on Linux.** It runs a deterministic workflow under an independent eBPF oracle that observes process execution at kernel tracepoints, then scores a recorder-under-test against what the kernel actually saw — using a strict classification discipline that separates genuine capture failures from scope limitations and insufficient evidence.
 
-> **Status: experimental prototype.** The oracle and workflow exist and the Python tooling is tested, but the eBPF program has not yet been validated on a host where eBPF can be loaded (see [Validation status](#validation-status)). No recorder adapters have been run yet — the results table below is deliberately empty until real runs exist. Contributions toward both are very welcome.
+> **Status: experimental, oracle validated on a real host.** On 2026-10-20 the eBPF oracle was built, loaded, and run on Ubuntu 24.04 ARM64 (kernel 6.8.0, Multipass VM): all 10 core-scenario checks observed, including correct attribution of the Python-launched `git` child — see [VALIDATION.md](VALIDATION.md). Recorder adapters exist but no recorder comparison has been published yet; the results table below stays empty until one is run and classified.
 
 ## The test case that motivates this
 
@@ -141,7 +141,7 @@ Pre-written starter issues are collected in [docs/INITIAL_ISSUES.md](docs/INITIA
 
 ## Validation status
 
-The Python workflow and report parser are tested and pass (`make check`). The eBPF program has **not** been compiled, loaded, or validated against real kernel events: the authoring environment had no tracefs, no BPF-target Clang, and no libbpf headers. Successful Python tests are not evidence that the kernel oracle works. After a run on a suitable host, the exact kernel version, distribution, compiler/libbpf versions, capabilities, raw JSONL files, and report should be published in [VALIDATION.md](VALIDATION.md). If the oracle fails to attach or its events don't match the workflow, the experiment is *undetermined* until the oracle itself is debugged.
+**Core scenario validated on a real host (2026-10-20).** Ubuntu 24.04.5 LTS (aarch64, kernel 6.8.0-147-generic) in a Multipass VM on Apple Silicon; clang 18.1.3, libbpf 1.3.0. The build initially failed on two genuine portability bugs — clang's BPF backend has no `memset` libcall, and its loop-idiom pass kept recreating one — both fixed (see [VALIDATION.md](VALIDATION.md)). The validated run observed all 10 core checks, 17 oracle events (9 exec, 8 fork), 5/5 supervisor steps. The evasion suite and recorder comparisons are being validated the same way and will be recorded in VALIDATION.md as they complete; anything not yet run is stated as such, and a failed or unmatched run is classified *undetermined* until the oracle side is ruled out.
 
 ## Contributing
 
