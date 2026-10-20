@@ -126,9 +126,11 @@ static __always_inline void remember_argv(void *user_argv, __u32 pid)
         return;
 
     /* Same BPF no-libcall constraint as zero_event below: 776 bytes.
-     * sizeof(struct acb_argv_data) = 776 (97 words). */
+     * sizeof(struct acb_argv_data) = 776 (97 words). Stores are volatile:
+     * otherwise clang's loop-idiom pass converts the loop back into the
+     * memset libcall that BPF cannot emit. */
     {
-        __u64 *words = (__u64 *)data;
+        volatile __u64 *words = (volatile __u64 *)data;
 
 #pragma unroll
         for (int i = 0; i < (int)(sizeof(*data) / sizeof(__u64)); i++)
@@ -170,10 +172,12 @@ static __always_inline void remember_argv(void *user_argv, __u32 pid)
  * the 1072-byte event struct makes clang request one and the compile fails
  * ("A call to built-in function 'memset' is not supported"). Zero and copy
  * with explicit unrolled word loops instead. Both sizes divide by 8:
- * sizeof(struct acb_event) = 1072 (134 words), argv block = 768 (96 words). */
+ * sizeof(struct acb_event) = 1072 (134 words), argv block = 768 (96 words).
+ * Accesses are volatile: a plain loop is converted BACK into a memset call
+ * by clang's loop-idiom recognition, which fails the same way. */
 static __always_inline void zero_event(struct acb_event *event)
 {
-    __u64 *words = (__u64 *)event;
+    volatile __u64 *words = (volatile __u64 *)event;
 
 #pragma unroll
     for (int i = 0; i < (int)(sizeof(*event) / sizeof(__u64)); i++)
@@ -183,8 +187,8 @@ static __always_inline void zero_event(struct acb_event *event)
 static __always_inline void copy_argv(struct acb_event *event,
                                       const struct acb_argv_data *args)
 {
-    __u64 *dst = (__u64 *)event->argv;
-    const __u64 *src = (const __u64 *)args->argv;
+    volatile __u64 *dst = (volatile __u64 *)event->argv;
+    const volatile __u64 *src = (const volatile __u64 *)args->argv;
 
 #pragma unroll
     for (int i = 0; i < (int)(sizeof(event->argv) / sizeof(__u64)); i++)
