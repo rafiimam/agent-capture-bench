@@ -1,0 +1,73 @@
+scenario_id: capture-evasion-v1
+title: Execution patterns capture tools commonly miss
+purpose: >-
+  Extend the core scenario with execution shapes that stress different capture
+  mechanisms: shell indirection, the execveat syscall, daemon-style double
+  forking (which orphans the real worker), bursts of very short-lived
+  processes, argv that exceeds the oracle's own capture bounds, and direct
+  execution of a script (where the kernel execs an interpreter for the file).
+  Run with: workflow/run_workflow.py --suite evasion (or --suite all).
+platforms:
+  phase_1: Linux
+expected_cases:
+  - id: shell_c_git
+    kind: shell_indirection
+    expectation: >-
+      /bin/sh -c 'git log -n 1' runs in the fixture repository; both the shell
+      and the git child it launches should appear in the oracle.
+  - id: execveat_git
+    kind: execveat_syscall
+    expectation: >-
+      A Python process forks and the child invokes git via the execveat
+      syscall (AT_FDCWD, empty flags) through ctypes. The oracle attaches to
+      sys_enter_execveat as well as sys_enter_execve, so the git exec should
+      appear with the Python probe as ancestor.
+    boundaries: >-
+      Syscall numbers are architecture-specific (x86_64: 322, aarch64: 281);
+      the case fails loudly on unmapped architectures instead of guessing.
+  - id: double_fork_daemon
+    kind: daemonization
+    expectation: >-
+      Python forks; the intermediate child forks a grandchild and exits
+      immediately, orphaning the grandchild, which writes a marker file and
+      then execs /bin/echo daemon-echo. The oracle should see the echo exec,
+      but its ppid should NOT be the Python probe: ancestry is broken by the
+      double fork, and reports must show that honestly rather than inventing
+      a parent.
+  - id: short_lived_burst
+    kind: short_lived_processes
+    expectation: >-
+      Twenty sequential /bin/true executions in a tight loop. The oracle
+      check is count-based (all twenty execs observed); this is the classic
+      case where ring/perf buffer pressure silently drops events in
+      recorder-under-test tooling.
+  - id: argv_overflow
+    kind: argv_beyond_capture_bounds
+    expectation: >-
+      /bin/echo with 13 arguments, the last 200 bytes long, deliberately
+      exceeding the oracle's documented bounds (8 argv elements, 95 bytes
+      each). The oracle is EXPECTED to truncate and set args_truncated;
+      the check verifies the truncation is flagged, not hidden. Recorders
+      with larger bounds may capture more; comparisons must treat the
+      oracle's truncation as a measurement boundary, not a recorder win.
+  - id: script_exec
+    kind: script_interpreter_exec
+    expectation: >-
+      A fixture shell script (#!/bin/sh) executed directly by path. The
+      kernel resolves the shebang and execs the interpreter; the oracle
+      should show the script path in the exec capture (via sys_enter_execve)
+      and/or the interpreter exec referencing the script.
+measurement_boundaries:
+  process_oracle:
+    observes: successful exec events plus fork/clone ancestry through kernel tracepoints
+    argv_limit: 8 arguments, 95 bytes per argument
+    does_not_claim: >-
+      Complete command-line capture (argv_overflow exceeds it by design),
+      re-parenting-proof ancestry (double_fork_daemon breaks it by design),
+      or a global total order across CPUs.
+  supervisor:
+    observes: named workflow steps, their return codes, the daemon marker file, and controlled file hashes
+    independent_of_bpf_oracle: true
+  recorder_under_test:
+    output: recorder-output.jsonl
+    compare_against: oracle-events.jsonl and supervisor-events.jsonl

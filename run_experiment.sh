@@ -16,6 +16,7 @@ set +e
 sudo "$ROOT/build/agentcap-oracle" \
   --output "$WORK/oracle-events.jsonl" -- \
   "$PYTHON" "$ROOT/workflow/run_workflow.py" \
+  --suite "${ACB_SUITE:-core}" \
   --fixture-dir "$WORK/fixture" \
   --events "$WORK/supervisor-events.jsonl"
 TARGET_STATUS=$?

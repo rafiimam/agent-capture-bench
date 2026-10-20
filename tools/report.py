@@ -142,6 +142,38 @@ def main() -> int:
         "file_change_recorded": bool(fs_results and fs_results[0].get("changed")
                                       and fs_results[0].get("sha256_after")),
     }
+    # --- capture-evasion-v1 checks (scenario-v2) ---
+    def argv_str(event: dict[str, Any]) -> str:
+        return " ".join(str(a) for a in (event.get("argv") or []))
+
+    execveat_probe = find_event(exec_events, lambda e: basename(str(e.get("filename", ""))).startswith("python")
+                                and "SYS_execveat" in argv_str(e))
+    execveat_git = None
+    if execveat_probe:
+        execveat_git = find_event(exec_events, lambda e: is_git_log(e)
+                                  and e.get("ppid") == execveat_probe.get("pid"))
+    daemon_probe = find_event(exec_events, lambda e: basename(str(e.get("filename", ""))).startswith("python")
+                              and "daemon-marker" in argv_str(e))
+    daemon_echo = find_event(exec_events, lambda e: basename(str(e.get("filename", ""))) == "echo"
+                             and "daemon-echo" in (e.get("argv") or []))
+    true_count = sum(1 for e in exec_events if basename(str(e.get("filename", ""))) == "true")
+    evasion_checks = {
+        "shell_c_git_shell_seen": has_exec(lambda e: basename(str(e.get("filename", ""))) == "sh"
+                                           and "git log -n 1" in argv_str(e)),
+        "execveat_probe_seen": execveat_probe is not None,
+        "execveat_git_child_seen": execveat_git is not None,
+        "daemon_grandchild_seen": daemon_echo is not None,
+        "daemon_grandchild_orphaned": bool(daemon_echo and daemon_probe
+                                           and daemon_echo.get("ppid") != daemon_probe.get("pid")),
+        "short_lived_burst_all_seen": true_count >= 20,
+        "short_lived_burst_true_count": true_count,
+        "argv_overflow_truncation_flagged": has_exec(
+            lambda e: basename(str(e.get("filename", ""))) == "echo"
+            and bool(e.get("args_truncated")) and int(e.get("argc") or 0) >= 9),
+        "script_exec_seen": has_exec(lambda e: "helper.sh" in str(e.get("filename", ""))
+                                     or "helper.sh" in argv_str(e)),
+    }
+
     failed_steps = [step.get("case_id") for step in step_results if not step.get("passed")]
     recorder_comparison = (
         compare_canonical_recorder(oracle_events, recorder_records)
@@ -158,6 +190,7 @@ def main() -> int:
         "oracle_event_type_counts": dict(type_counts),
         "observed_checks": checks,
         "all_oracle_checks_observed": all(checks.values()),
+        "evasion_checks": evasion_checks,
         "supervisor_step_count": len(step_results),
         "supervisor_steps_passed": len(step_results) - len(failed_steps),
         "failed_supervisor_steps": failed_steps,

@@ -34,7 +34,7 @@ $(BUILD)/agentcap-oracle: src/oracle.c include/oracle_events.h | $(BUILD)
 
 check:
 	python3 -m unittest discover -s tests -v
-	python3 -m py_compile workflow/prepare_fixture.py workflow/run_workflow.py tools/report.py
+	python3 -m py_compile workflow/prepare_fixture.py workflow/run_workflow.py tools/report.py adapters/execsnoop.py adapters/auditd.py
 
 clean:
 	rm -rf $(BUILD) .work
