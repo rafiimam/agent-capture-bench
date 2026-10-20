@@ -125,7 +125,15 @@ static __always_inline void remember_argv(void *user_argv, __u32 pid)
     if (!data || !user_argv)
         return;
 
-    __builtin_memset(data, 0, sizeof(*data));
+    /* Same BPF no-libcall constraint as zero_event below: 776 bytes.
+     * sizeof(struct acb_argv_data) = 776 (97 words). */
+    {
+        __u64 *words = (__u64 *)data;
+
+#pragma unroll
+        for (int i = 0; i < (int)(sizeof(*data) / sizeof(__u64)); i++)
+            words[i] = 0;
+    }
 
 #pragma unroll
     for (int i = 0; i < ACB_MAX_ARGS; i++) {
@@ -158,6 +166,31 @@ static __always_inline void remember_argv(void *user_argv, __u32 pid)
     bpf_map_update_elem(&pending_argv, &pid, data, BPF_ANY);
 }
 
+/* The BPF backend has no memset/memcpy libcall to emit: __builtin_memset on
+ * the 1072-byte event struct makes clang request one and the compile fails
+ * ("A call to built-in function 'memset' is not supported"). Zero and copy
+ * with explicit unrolled word loops instead. Both sizes divide by 8:
+ * sizeof(struct acb_event) = 1072 (134 words), argv block = 768 (96 words). */
+static __always_inline void zero_event(struct acb_event *event)
+{
+    __u64 *words = (__u64 *)event;
+
+#pragma unroll
+    for (int i = 0; i < (int)(sizeof(*event) / sizeof(__u64)); i++)
+        words[i] = 0;
+}
+
+static __always_inline void copy_argv(struct acb_event *event,
+                                      const struct acb_argv_data *args)
+{
+    __u64 *dst = (__u64 *)event->argv;
+    const __u64 *src = (const __u64 *)args->argv;
+
+#pragma unroll
+    for (int i = 0; i < (int)(sizeof(event->argv) / sizeof(__u64)); i++)
+        dst[i] = src[i];
+}
+
 static __always_inline int emit_fork(__u32 parent_pid, __u32 child_pid,
                                       const char child_comm[ACB_TASK_COMM_LEN])
 {
@@ -165,7 +198,7 @@ static __always_inline int emit_fork(__u32 parent_pid, __u32 child_pid,
     if (!event)
         return 0;
 
-    __builtin_memset(event, 0, sizeof(*event));
+    zero_event(event);
     event->ts_ns = bpf_ktime_get_ns();
     event->type = ACB_EVENT_FORK;
     event->pid = child_pid;
@@ -240,7 +273,7 @@ int capture_exec(struct trace_event_raw_sched_process_exec *ctx)
     if (!event)
         return 0;
 
-    __builtin_memset(event, 0, sizeof(*event));
+    zero_event(event);
     event->ts_ns = bpf_ktime_get_ns();
     event->type = ACB_EVENT_EXEC;
     event->pid = pid;
@@ -261,7 +294,7 @@ int capture_exec(struct trace_event_raw_sched_process_exec *ctx)
     if (args) {
         event->argc = args->argc;
         event->args_truncated = args->truncated;
-        __builtin_memcpy(event->argv, args->argv, sizeof(event->argv));
+        copy_argv(event, args);
     }
 
     bpf_ringbuf_submit(event, 0);
