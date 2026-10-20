@@ -1,78 +1,113 @@
-# AgentCaptureBench — Linux oracle prototype
+# AgentCaptureBench
 
-> **Status: experimental prototype; not yet validated on a host where eBPF can be loaded.**
->
-> This repository is the first, deliberately narrow milestone: an independent Linux process-execution observer plus one deterministic workflow. It does not yet include adapters for DEPOSE, Tracekit, or other recorders, and it does not establish a new capture failure.
+**Does your capture tool actually see what executed?**
 
-## Research question
+[![Python checks](https://github.com/rafiimam/agent-capture-bench/actions/workflows/tests.yml/badge.svg)](https://github.com/rafiimam/agent-capture-bench/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status: experimental](https://img.shields.io/badge/status-experimental-orange.svg)](#validation-status)
 
-Under a controlled Linux execution environment, does a selected capture configuration record a child process launched by a Python interpreter, and does that behavior match the configuration's documented guarantees?
+Process-capture tools — eBPF tracers, audit pipelines, EDR sensors, deterministic recorders, AI-agent action logs — all claim to record what a system executed. Almost none of those claims are checked against an independent ground truth. A recorder can silently miss exactly the executions that matter most: the child process an interpreter spawned, the short-lived helper, the pipeline stage — and the log still *looks* complete.
 
-The high-value test case is:
+**AgentCaptureBench is a ground-truth benchmark for process capture on Linux.** It runs a deterministic workflow under an independent eBPF oracle that observes process execution at kernel tracepoints, then scores a recorder-under-test against what the kernel actually saw — using a strict classification discipline that separates genuine capture failures from scope limitations and insufficient evidence.
+
+> **Status: experimental prototype.** The oracle and workflow exist and the Python tooling is tested, but the eBPF program has not yet been validated on a host where eBPF can be loaded (see [Validation status](#validation-status)). No recorder adapters have been run yet — the results table below is deliberately empty until real runs exist. Contributions toward both are very welcome.
+
+## The test case that motivates this
 
 ```python
 import subprocess
 subprocess.run(['git', 'log', '-n', '1'], check=False)
 ```
 
-The oracle observes successful process image changes through `sched:sched_process_exec`, captures bounded argv data at `sys_enter_execve` and `sys_enter_execveat`, and uses `sched:sched_process_fork` to reconstruct parent/child relationships. Its output is independent of any recorder-under-test output.
+A Python process launching `git` is where capture tools quietly diverge: hook-based recorders see the Python call but not necessarily the child process; syscall tracers see the exec but may lose the ancestry; sampling and buffering drop short-lived processes entirely. AgentCaptureBench exists to measure that divergence instead of arguing about it.
 
-**The oracle is not omniscient.** It does not prove that all system activity was observed. It logs successful exec events, not every failed `execve()` attempt; captures at most 8 argv elements of 95 bytes each; and uses a kernel tracepoint as its process-execution ground truth. A missing event must be classified as *undetermined* until oracle permissions, scenario execution, configuration, and buffering have been checked.
+## How it works
 
-## Artifacts
+```mermaid
+flowchart LR
+    W[Deterministic workflow<br/>6 controlled cases] --> S[Supervisor<br/>step outcomes + file hashes]
+    W --> O[eBPF oracle<br/>kernel exec/fork truth]
+    W --> R[Recorder under test<br/>adapter output]
+    O --> C[Comparison report]
+    S --> C
+    R --> C
+    C --> V[Classification per event:<br/>conformant · capture failure ·<br/>scope limitation · undetermined]
+```
 
-- `workflow/scenario.yaml` — expectations and measurement boundaries.
-- `.work/run-*/oracle-events.jsonl` — independent eBPF event stream, including metadata.
-- `.work/run-*/supervisor-events.jsonl` — workflow step outcomes and before/after hashes for the controlled file.
-- `.work/run-*/oracle-report.json` — sanity report for the oracle and workflow. This is not a recorder-comparison result.
-- `recorder-output.jsonl` — reserved for a future recorder adapter; no adapter is implemented yet.
+Three independent evidence streams, none derived from the recorder's own output:
 
-The supervisor and eBPF oracle answer different questions. The supervisor records whether named workflow steps completed and what their return codes and file hashes were. The kernel oracle records successful exec/fork events. Neither is derived from the recorder-under-test output.
+- **The oracle** observes successful process image changes via `sched:sched_process_exec`, captures bounded argv at `sys_enter_execve` / `sys_enter_execveat`, and reconstructs parent/child relationships from `sched:sched_process_fork`. Output: `oracle-events.jsonl`.
+- **The supervisor** records whether each named workflow step completed, its return code, and before/after SHA-256 hashes of a controlled file. Output: `supervisor-events.jsonl`.
+- **The recorder under test** is whatever you are evaluating, adapted to a documented JSONL format. Output: `recorder-output.jsonl`.
 
-## Prototype event schema
+**The oracle is not omniscient, and this project will not pretend otherwise.** It logs successful exec events, not every failed `execve()` attempt; it captures at most 8 argv elements of 95 bytes each; a tracepoint is a ground truth for *process execution*, not for all system activity. A missing event is classified **undetermined** until oracle permissions, scenario execution, configuration, and buffering have all been checked.
 
-Every non-metadata line in `oracle-events.jsonl` uses these fields:
+## Quickstart
 
-- `record_type`: `event`
-- `seq`: userspace delivery sequence (not a guaranteed cross-CPU kernel total order)
-- `ts_ns`: monotonic nanoseconds from `bpf_ktime_get_ns()`
-- `type`: `fork` or `exec`
-- `pid`, `ppid`, `old_pid`, `comm`, `filename`
-- `argv`, `argc`, `args_truncated`
+Requirements: Linux with eBPF and ring-buffer support; the tracepoints `syscalls:sys_enter_execve`, `syscalls:sys_enter_execveat`, `sched:sched_process_fork`, `sched:sched_process_exec`, `sched:sched_process_exit`; Clang with a BPF backend; `libbpf-dev`, `libelf-dev`, `zlib1g-dev`; permission to load eBPF (root or `CAP_BPF`/`CAP_PERFMON`); Python 3 and Git.
 
-`ppid: 0` means unknown in this prototype; do not interpret it as proof of a root process. Fork records establish ancestry, while exec records are emitted when the kernel reports a successful image change. Arguments may be truncated, and the report must preserve that uncertainty.
-
-## Requirements
-
-The prototype targets Linux with:
-
-- A kernel with eBPF, ring-buffer map support, and the following tracepoints: `syscalls:sys_enter_execve`, `syscalls:sys_enter_execveat`, `sched:sched_process_fork`, `sched:sched_process_exec`, and `sched:sched_process_exit`.
-- Clang with the BPF backend (the `clang` binary must support `-target bpf`).
-- `libbpf-dev`, `libelf-dev`, `zlib1g-dev`, a C compiler, `make`, and the usual kernel/userspace development headers.
-- Permission to load eBPF programs and attach to tracepoints. Depending on the kernel and security policy, this generally requires root or suitable `CAP_BPF`/`CAP_PERFMON` and perf-event permissions.
-- Python 3 and Git for the workflow.
-
-On Debian/Ubuntu, dependencies are typically installed with:
+On Debian/Ubuntu:
 
 ```bash
 sudo apt update
 sudo apt install clang llvm libbpf-dev libelf-dev zlib1g-dev make gcc git python3
-```
 
-Exact package versions and capabilities vary by distribution, kernel, container policy, and lockdown settings. Building successfully does not imply that the current host permits BPF loading.
-
-## Run
-
-From this directory:
-
-```bash
+git clone https://github.com/rafiimam/agent-capture-bench.git
+cd agent-capture-bench
 make
 ./run_experiment.sh
 ```
 
-The script prepares a tiny local Git fixture before attaching the oracle, then invokes the target workflow while capture is active. When run through `sudo`, the loader attempts to drop the target child back to the invoking user's `SUDO_UID`/`SUDO_GID` before releasing it. If you run as root without `SUDO_UID` and `SUDO_GID`, the tool refuses to run the target unless you explicitly pass `--allow-root-target`; use that override only inside an isolated test environment.
+`run_experiment.sh` prepares a tiny local Git fixture, runs the workflow under the oracle (via `sudo`; the loader drops the target child back to your `SUDO_UID`/`SUDO_GID`), and writes a fresh `.work/run-*/` directory per run containing `oracle-events.jsonl`, `supervisor-events.jsonl`, and `oracle-report.json`. Building successfully does not imply the host permits BPF loading — if the oracle cannot attach, the run is classified undetermined, not failed.
 
-To run manually:
+Manual invocation, the event schema, and the root-target override are documented in [Running manually](#running-manually) below.
+
+## What the current scenario checks
+
+Scenario `python-subprocess-capture-v1` ([workflow/scenario.yaml](workflow/scenario.yaml)) runs six controlled cases:
+
+| Case | What happens | What it probes |
+|---|---|---|
+| `path_echo` | `echo hello` resolved through `PATH` | PATH-resolved execution visibility |
+| `absolute_echo` | `/bin/echo absolute` by absolute path | Direct execution visibility |
+| `shell_pipeline` | Pipeline of `/bin/echo` and `/usr/bin/wc` | Multi-process pipeline stages |
+| `nonzero_exit` | `/usr/bin/false` returns status 1 | Executed-but-failed commands |
+| `python_spawns_git` | Python `-c` → `subprocess.run(['git', 'log', '-n', '1'])` | **Interpreter-launched child processes** |
+| `file_modification` | Controlled file write, SHA-256 before/after | Filesystem effect accounting |
+
+## Results
+
+Recorder comparisons will be published here as adapters land and runs are validated. No composite scores — coverage, field accuracy, ordering/correlation, redaction, integrity, and overhead are reported separately, with exact recorder versions, permissions, platform, and configuration pinned per run.
+
+| Recorder | Version | `path_echo` | `absolute_echo` | `shell_pipeline` | `nonzero_exit` | `python_spawns_git` | `file_modification` |
+|---|---|---|---|---|---|---|---|
+| — | — | *no validated runs yet* | | | | | |
+
+See [docs/LANDSCAPE.md](docs/LANDSCAPE.md) for the recorders and capture tools this benchmark is designed to evaluate, and what each one claims.
+
+## Classification discipline
+
+Every compared event lands in exactly one class:
+
+- **Conformant** — the output matches the documented capture guarantee.
+- **Capture failure** — an event covered by the stated guarantee is missing or incorrect.
+- **Scope limitation** — the event is outside the stated guarantee, and that boundary is explicit.
+- **Undetermined** — insufficient evidence to distinguish a recorder miss from a workflow, permission, oracle, configuration, or buffering problem.
+
+A recorder is not defective merely because it does not capture OS-level child processes when it promises only agent lifecycle hooks. Likewise, a signed or hash-chained record establishes integrity of the recorded bytes without establishing completeness of capture. This discipline — especially the refusal to call unproven misses "failures" — is the point of the benchmark.
+
+## Oracle event schema
+
+Every non-metadata line in `oracle-events.jsonl` carries:
+
+- `record_type`: `event`
+- `seq`: userspace delivery sequence (not a guaranteed cross-CPU kernel total order)
+- `pid`, `ppid`, `old_pid`, `comm`, `filename`
+- `argv`, `argc`, `args_truncated`
+
+`ppid: 0` means unknown in this prototype; do not interpret it as proof of a root process. Fork records establish ancestry, while exec records are emitted when the kernel reports a successful image change. Arguments may be truncated, and reports must preserve that uncertainty.
+
+## Running manually
 
 ```bash
 mkdir -p .work
@@ -88,37 +123,24 @@ python3 tools/report.py \
   --output .work/oracle-report.json
 ```
 
-The experiment script creates a unique `.work/run-*` directory for each run. The fixture preparation script refuses to reuse an existing Git repository, preventing accidental mixing of observations across experiments.
+The fixture script refuses to reuse an existing Git repository, preventing accidental mixing of observations across experiments. If you run as root without `SUDO_UID`/`SUDO_GID`, the tool refuses to run the target unless you pass `--allow-root-target` — use that override only inside an isolated test environment.
 
-## Workflow cases
+## Roadmap
 
-1. `echo hello` resolved through `PATH`.
-2. `/bin/echo absolute` invoked by absolute path.
-3. A pipeline containing `/bin/echo` and `/usr/bin/wc`.
-4. `/usr/bin/false`, which executes successfully and then returns exit status 1.
-5. A Python `-c` process that calls `subprocess.run(['git', 'log', '-n', '1'])` in the local fixture repository.
-6. A controlled file write with SHA-256 hashes recorded before and after.
+- **Recorder adapters** — auditd, BCC/bpftrace `execsnoop`, Tetragon, Falco, and agent recorders such as DEPOSE and Tracekit ([adapter proposal template](.github/ISSUE_TEMPLATE/recorder_adapter.md)).
+- **Scenario families** — shell `-c` indirection, `execveat`, double-fork/daemonization, very short-lived processes, argv beyond the 8×95-byte bound, script-vs-binary execution. Session interruption, secret redaction, and tamper detection become separate families after the Linux oracle is validated.
+- **First validated host run** — publish kernel/distribution/compiler versions, capabilities, raw JSONL, and the report (see [VALIDATION.md](VALIDATION.md)).
+- **macOS** — phase 2, not implemented.
 
-This first experiment intentionally excludes session interruption, secret-redaction, tamper detection, syscall-level failed-exec capture, and macOS. Those should be separate test families after the Linux oracle is validated.
+Pre-written starter issues are collected in [docs/INITIAL_ISSUES.md](docs/INITIAL_ISSUES.md).
 
-## Interpretation rules
+## Validation status
 
-Use four distinct classifications when recorder adapters are added:
+The Python workflow and report parser are tested and pass (`make check`). The eBPF program has **not** been compiled, loaded, or validated against real kernel events: the authoring environment had no tracefs, no BPF-target Clang, and no libbpf headers. Successful Python tests are not evidence that the kernel oracle works. After a run on a suitable host, the exact kernel version, distribution, compiler/libbpf versions, capabilities, raw JSONL files, and report should be published in [VALIDATION.md](VALIDATION.md). If the oracle fails to attach or its events don't match the workflow, the experiment is *undetermined* until the oracle itself is debugged.
 
-- **Conformant** — the output matches the documented capture guarantee.
-- **Capture failure** — an event covered by the stated guarantee is missing or incorrect.
-- **Scope limitation** — the event is outside the stated guarantee and this boundary is explicit.
-- **Undetermined** — insufficient evidence to distinguish a recorder miss from a workflow, permission, oracle, configuration, or buffering problem.
+## Contributing
 
-A recorder is not defective merely because it does not capture OS-level child processes when it promises only to record agent lifecycle hooks. Likewise, a signed or hash-chained record can establish integrity of recorded bytes without establishing completeness of capture.
-
-Do not rank recorders using one composite score. Report capture coverage, field accuracy, event ordering/correlation, redaction, integrity, and overhead separately. A recorder comparison should pin exact versions, permissions, platform, configuration, and documented claims.
-
-## Current validation status
-
-The source tree was created in a constrained Linux container. In this environment, tracefs is not mounted, the installed Swift-derived Clang does not advertise a BPF target, and libbpf development headers are absent. Therefore the eBPF program could **not** be compiled, loaded, or validated against real kernel events here. The Python workflow and report parser are testable independently; successful tests of those scripts are not evidence that the kernel oracle works.
-
-After running on a suitable host, publish the exact kernel version, distribution, compiler/libbpf versions, capabilities, raw JSONL files, and report. If the oracle fails to attach or its observed events don't match the workflow, classify the experiment as *undetermined* until the oracle itself is debugged.
+Contributions are welcome — especially recorder adapters, new scenario families, and validation reports from real hosts. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and the classification discipline contributions must follow, and the issue templates for bug reports, validation reports, and adapter proposals.
 
 ## Useful technical references
 
@@ -128,4 +150,4 @@ After running on a suitable host, publish the exact kernel version, distribution
 
 ## License
 
-MIT. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).
