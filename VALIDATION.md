@@ -42,9 +42,54 @@ real (virtualized) kernel for the first time.
 
 This validates the oracle for the core scenario on the environment above:
 it attaches, observes successful execs and fork ancestry, and correctly
-attributes the Python-launched `git` child. It does not yet validate the
-evasion suite (`capture-evasion-v1`) or any recorder comparison — those runs
-are recorded here as they happen.
+attributes the Python-launched `git` child.
+
+### Evasion suite run (scenario capture-evasion-v1) — 2026-10-20
+
+Same environment, `ACB_SUITE=all ./run_experiment.sh`, reproduced identically
+across three runs (`.work/run-20261020T162304-18500`,
+`.work/run-20261020T162512-21137`, `.work/run-20261020T163015-27119`):
+
+- Oracle events: **76** (38 exec, 38 fork); supervisor **11/11 steps passed**.
+- Core checks: **10/10 true**. Evasion checks: **9/9 true** —
+  `shell_c_git_shell_seen`, `execveat_probe_seen`, `execveat_git_child_seen`,
+  `daemon_grandchild_seen`, `daemon_grandchild_orphaned`,
+  `short_lived_burst_all_seen` (count exactly 20),
+  `argv_overflow_truncation_flagged`, `script_exec_seen`.
+- Two defects were found and fixed during this validation, neither in the
+  oracle: (1) `report.py`'s overflow check required `argc >= 9`, but the
+  oracle's `argc` counts *captured* args and caps at 8 — the raw event stream
+  confirms `args_truncated: true` was set correctly all along (commit
+  fdfffd9); (2) the execsnoop adapter knew only the upstream BCC header
+  layout and skipped 548/548 lines of Ubuntu's `PCOMM`-layout output (same
+  commit). Both fixes carry regression tests built from the real data.
+
+### First recorder comparison: execsnoop (BCC / bpfcc-tools) — 2026-10-20
+
+Setup: `execsnoop-bpfcc` (Ubuntu 24.04 `bpfcc-tools`) recording system-wide
+during an `ACB_SUITE=all` run (`.work/run-20261020T163015-27119`), converted
+with `adapters/execsnoop.py` (251 recorder events) and compared with
+`tools/report.py`.
+
+- Oracle exec events: **38**. Exact-argv matches: **27**.
+- **11 oracle events unmatched — all classified as representation
+  differences, not capture failures**, after inspecting the pairs:
+  argv[0] recorded resolved (`/usr/bin/echo`, `/usr/bin/git`) vs as-invoked
+  (`echo`, `git`); multi-word arguments (`sh -c` strings, Python `-c` code)
+  fragmented by execsnoop's space-joined text format and bounded at 95 bytes
+  by the oracle, so exact-argv matching cannot pair them; the argv-overflow
+  event, where the oracle caps at 8 args and execsnoop prints all 14.
+  In substance, every execution the oracle observed is present in
+  execsnoop's stream.
+- **224 recorder events had no oracle counterpart** — expected and not a
+  defect on either side: execsnoop is system-wide (VM background services,
+  fixture setup, the harness's own shell commands), while the oracle tracks
+  only the workflow's process tree.
+- Methodology note: exact-argv matching understates agreement when the two
+  sides bound or render argv differently. A normalization-aware matcher
+  (argv[0] basename equivalence, prefix matching at truncation bounds) is
+  the identified next improvement; until it lands, comparisons are published
+  with this classification analysis rather than a bare match count.
 
 ## Authoring-container checks — 2026-10-16
 

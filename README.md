@@ -10,7 +10,7 @@ Process-capture tools — eBPF tracers, audit pipelines, EDR sensors, determinis
 
 **AgentCaptureBench is a ground-truth benchmark for process capture on Linux.** It runs a deterministic workflow under an independent eBPF oracle that observes process execution at kernel tracepoints, then scores a recorder-under-test against what the kernel actually saw — using a strict classification discipline that separates genuine capture failures from scope limitations and insufficient evidence.
 
-> **Status: experimental, oracle validated on a real host.** On 2026-10-20 the eBPF oracle was built, loaded, and run on Ubuntu 24.04 ARM64 (kernel 6.8.0, Multipass VM): all 10 core-scenario checks observed, including correct attribution of the Python-launched `git` child — see [VALIDATION.md](VALIDATION.md). Recorder adapters exist but no recorder comparison has been published yet; the results table below stays empty until one is run and classified.
+> **Status: experimental, validated, first recorder comparison published.** On 2026-10-20 the eBPF oracle was built, loaded, and run on Ubuntu 24.04 ARM64 (kernel 6.8.0, Multipass VM): all 10 core checks and all 9 evasion-suite checks observed, including correct attribution of the Python-launched `git` child — and the first recorder comparison (BCC execsnoop) was run and classified. See [VALIDATION.md](VALIDATION.md) and [Results](#results).
 
 ## The test case that motivates this
 
@@ -81,7 +81,9 @@ Recorder comparisons will be published here as adapters land and runs are valida
 
 | Recorder | Version | `path_echo` | `absolute_echo` | `shell_pipeline` | `nonzero_exit` | `python_spawns_git` | `file_modification` |
 |---|---|---|---|---|---|---|---|
-| — | — | *no validated runs yet* | | | | | |
+| execsnoop (BCC) | Ubuntu 24.04 bpfcc-tools, 2026-10-20 | ✓* | ✓ | ✓* | ✓ | ✓* | — (filesystem effect, out of scope) |
+
+\* Captured — present in the recorder's stream, but exact-argv matching could not pair it with the oracle event for representation reasons (argv[0] resolved vs as-invoked; space-joined text argv vs the oracle's 95-byte bound). Across the full core+evasion run: 38 oracle exec events, 27 exact matches, 11 representation differences, **zero genuine capture misses**; 224 recorder-only events were system background outside the oracle's tracked tree. Full classification analysis: [VALIDATION.md](VALIDATION.md).
 
 See [docs/LANDSCAPE.md](docs/LANDSCAPE.md) for the recorders and capture tools this benchmark is designed to evaluate, and what each one claims.
 
