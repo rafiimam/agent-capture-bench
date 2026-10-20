@@ -167,9 +167,12 @@ def main() -> int:
                                            and daemon_echo.get("ppid") != daemon_probe.get("pid")),
         "short_lived_burst_all_seen": true_count >= 20,
         "short_lived_burst_true_count": true_count,
+        # The oracle's argc counts CAPTURED args and caps at ACB_MAX_ARGS (8),
+        # so "argc >= 9" would be unsatisfiable. The honest signal is:
+        # args_truncated set AND the captured argv sitting at the cap.
         "argv_overflow_truncation_flagged": has_exec(
             lambda e: basename(str(e.get("filename", ""))) == "echo"
-            and bool(e.get("args_truncated")) and int(e.get("argc") or 0) >= 9),
+            and bool(e.get("args_truncated")) and len(e.get("argv") or []) >= 8),
         "script_exec_seen": has_exec(lambda e: "helper.sh" in str(e.get("filename", ""))
                                      or "helper.sh" in argv_str(e)),
     }

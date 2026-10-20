@@ -11,13 +11,17 @@ Convert:
     python3 adapters/execsnoop.py --input execsnoop.txt --output recorder-output.jsonl
     python3 tools/report.py --oracle ... --supervisor ... --recorder recorder-output.jsonl --output report.json
 
-Format notes (BCC execsnoop): a header line "TIME(s) COMM PID PPID RET ARGS"
-followed by one line per execve return. Only successful execs (RET >= 0) are
-emitted. execsnoop does not print the resolved executable path; the adapter
-preserves argv[0] exactly as invoked in the `filename` field. The canonical
-comparison matches on basename + argv, so this loses nothing, but the field
-must not be mistaken for a resolved path. Lines that do not parse are skipped
-and counted in the summary printed to stderr — never silently dropped.
+Format notes (BCC execsnoop): one line per execve return, in one of two
+layouts depending on the build:
+  upstream BCC:  "TIME(s) COMM PID PPID RET ARGS"
+  Ubuntu bpfcc:  "PCOMM PID PPID RET ARGS"        (no time column)
+Both are accepted; the header line may appear anywhere (output interleaving
+can print events before it). Only successful execs (RET >= 0) are emitted.
+execsnoop does not print the resolved executable path; the adapter preserves
+argv[0] exactly as invoked in the `filename` field. The canonical comparison
+matches on basename + argv, so this loses nothing, but the field must not be
+mistaken for a resolved path. Lines that do not parse are skipped and counted
+in the summary printed to stderr — never silently dropped.
 """
 from __future__ import annotations
 
@@ -28,17 +32,20 @@ import shlex
 import sys
 from pathlib import Path
 
-LINE_RE = re.compile(r"^\s*(?P<time>\S+)\s+(?P<comm>\S+)\s+(?P<pid>\d+)\s+"
-                     r"(?P<ppid>\d+)\s+(?P<ret>-?\d+)\s+(?P<args>.*)$")
+TIME_LINE_RE = re.compile(r"^\s*(?P<time>\S+)\s+(?P<comm>\S+)\s+(?P<pid>\d+)\s+"
+                          r"(?P<ppid>\d+)\s+(?P<ret>-?\d+)\s+(?P<args>.*)$")
+PCOMM_LINE_RE = re.compile(r"^\s*(?P<comm>\S+)\s+(?P<pid>\d+)\s+"
+                           r"(?P<ppid>\d+)\s+(?P<ret>-?\d+)\s+(?P<args>.*)$")
 
 
 def convert(lines: list[str]) -> tuple[list[dict], int]:
     records: list[dict] = []
     skipped = 0
     for line in lines:
-        if not line.strip() or line.lstrip().startswith("TIME(s)"):
+        stripped = line.lstrip()
+        if not stripped or stripped.startswith(("TIME(s)", "PCOMM")):
             continue
-        match = LINE_RE.match(line)
+        match = TIME_LINE_RE.match(line) or PCOMM_LINE_RE.match(line)
         if not match:
             skipped += 1
             continue

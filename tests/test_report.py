@@ -143,6 +143,37 @@ class ReportTests(unittest.TestCase):
             self.assertEqual(comparison["unexpected_events"][0]["filename_basename"], "curl")
 
 
+    def test_argv_overflow_check_accepts_capped_captured_argc(self) -> None:
+        # Regression: the oracle's argc counts captured args (cap 8), so the
+        # truncation check must not require argc >= 9. Event shape mirrors the
+        # real overflow event observed on Ubuntu 24.04 arm64 (2026-10-20).
+        with tempfile.TemporaryDirectory(prefix="acb-report-") as tmp:
+            root = Path(tmp)
+            oracle_path = root / "oracle.jsonl"
+            supervisor_path = root / "supervisor.jsonl"
+            output_path = root / "report.json"
+            oracle = [
+                {"record_type": "metadata", "schema_version": 1, "target_pid": 100},
+                {"record_type": "event", "seq": 1, "ts_ns": 1, "type": "exec", "pid": 110,
+                 "ppid": 100, "old_pid": 110, "comm": "echo", "filename": "/bin/echo",
+                 "argc": 8, "args_truncated": True,
+                 "argv": ["/bin/echo", "arg0", "arg1", "arg2", "arg3", "arg4", "arg5", "arg6"]},
+            ]
+            supervisor = [
+                {"record_type": "supervisor_metadata", "schema_version": 1,
+                 "scenario_id": "capture-evasion-v1"},
+            ]
+            oracle_path.write_text("".join(json.dumps(x) + "\n" for x in oracle))
+            supervisor_path.write_text("".join(json.dumps(x) + "\n" for x in supervisor))
+            subprocess.run(
+                [sys.executable, str(REPORT), "--oracle", str(oracle_path),
+                 "--supervisor", str(supervisor_path), "--output", str(output_path)],
+                check=True, capture_output=True, text=True,
+            )
+            report = json.loads(output_path.read_text())
+            self.assertTrue(report["evasion_checks"]["argv_overflow_truncation_flagged"])
+
+
 if __name__ == "__main__":
     unittest.main()
 

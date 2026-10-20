@@ -32,6 +32,26 @@ class ExecsnoopAdapterTests(unittest.TestCase):
         self.assertEqual(records[1]["ppid"], 106)
 
 
+    def test_parses_ubuntu_bpfcc_layout_without_time_column(self) -> None:
+        # Real lines captured from execsnoop-bpfcc on Ubuntu 24.04 (2026-10-20):
+        # header is "PCOMM PID PPID RET ARGS" and events can precede the header.
+        adapter = load_adapter("execsnoop")
+        lines = [
+            "bash             20583   1123      0 /bin/bash -c echo hello",
+            "PCOMM            PID     PPID    RET ARGS",
+            "cat              20590   20587     0 /usr/bin/cat /proc/loadavg",
+            "git              30107   30106     0 git log -n 1",
+            "missing          30108   30106     -2 /bin/missing",
+        ]
+        records, skipped = adapter.convert(lines)
+        self.assertEqual(skipped, 0)
+        self.assertEqual(len(records), 3)
+        self.assertEqual(records[1]["argv"], ["/usr/bin/cat", "/proc/loadavg"])
+        self.assertEqual(records[1]["pid"], 20590)
+        self.assertEqual(records[1]["ppid"], 20587)
+        self.assertEqual(records[2]["filename"], "git")
+
+
 class AuditdAdapterTests(unittest.TestCase):
     def test_joins_execve_and_syscall_records_and_decodes_hex(self) -> None:
         adapter = load_adapter("auditd")
