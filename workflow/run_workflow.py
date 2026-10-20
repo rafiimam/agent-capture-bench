@@ -70,10 +70,103 @@ def run_case(handle, *, case_id: str, argv: list[str], cwd: Path | None = None,
     return result
 
 
+# --- Evasion suite (scenario capture-evasion-v1) ----------------------------
+# Each snippet runs as `python -c <code>` so the oracle sees a Python parent,
+# mirroring how an agent runtime launches work. Snippets must be deterministic
+# and self-verifying: a nonzero exit fails the supervisor step.
+
+EXECVEAT_CODE = r"""
+import ctypes, os, sys
+SYS_execveat = {"x86_64": 322, "aarch64": 281, "arm64": 281}[os.uname().machine]
+libc = ctypes.CDLL(None, use_errno=True)
+pid = os.fork()
+if pid == 0:
+    # NOTE: raw execveat performs no PATH search (unlike execvp); a bare
+    # "git" would mean ./git. The workflow injects git's resolved path.
+    argv = [b"git", b"log", b"-n", b"1"]
+    cargv = (ctypes.c_char_p * (len(argv) + 1))(*argv, None)
+    cenvp = (ctypes.c_char_p * 1)(None)
+    ret = libc.syscall(SYS_execveat, -100, b"GIT_PATH_PLACEHOLDER", cargv, cenvp, 0)
+    os._exit(127 if ret == -1 else 0)
+_, status = os.waitpid(pid, 0)
+sys.exit(0 if os.WIFEXITED(status) and os.WEXITSTATUS(status) == 0 else 1)
+""".strip()
+
+DOUBLE_FORK_CODE = r"""
+import os, sys, time
+marker = os.path.join(os.getcwd(), "daemon-marker.txt")
+if os.path.exists(marker):
+    os.unlink(marker)
+first = os.fork()
+if first == 0:
+    second = os.fork()
+    if second == 0:
+        with open(marker, "w") as fh:
+            fh.write("grandchild ran\n")
+        os.execv("/bin/echo", ["/bin/echo", "daemon-echo"])
+    os._exit(0)
+os.waitpid(first, 0)
+for _ in range(100):
+    if os.path.exists(marker):
+        sys.exit(0)
+    time.sleep(0.05)
+sys.exit(1)
+""".strip()
+
+BURST_CODE = r"""
+import subprocess, sys
+for _ in range(20):
+    subprocess.run(["/bin/true"], check=True)
+sys.exit(0)
+""".strip()
+
+
+def run_evasion_cases(handle, fixture: Path) -> None:
+    """Scenario capture-evasion-v1: execution patterns capture tools miss."""
+    run_case(
+        handle,
+        case_id="shell_c_git",
+        argv=["/bin/sh", "-c", "git log -n 1"],
+        cwd=fixture,
+    )
+    git_path = shutil.which("git") or "/usr/bin/git"
+    run_case(
+        handle,
+        case_id="execveat_git",
+        argv=[sys.executable, "-c", EXECVEAT_CODE.replace("GIT_PATH_PLACEHOLDER", git_path)],
+        cwd=fixture,
+    )
+    run_case(
+        handle,
+        case_id="double_fork_daemon",
+        argv=[sys.executable, "-c", DOUBLE_FORK_CODE],
+        cwd=fixture,
+    )
+    run_case(
+        handle,
+        case_id="short_lived_burst",
+        argv=[sys.executable, "-c", BURST_CODE],
+        cwd=fixture,
+    )
+    long_arg = "A" * 200
+    run_case(
+        handle,
+        case_id="argv_overflow",
+        argv=["/bin/echo"] + [f"arg{i}" for i in range(12)] + [long_arg],
+    )
+    script = fixture / "helper.sh"
+    script.write_text("#!/bin/sh\necho scripted\n", encoding="utf-8")
+    script.chmod(0o755)
+    run_case(handle, case_id="script_exec", argv=[str(script)])
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--fixture-dir", required=True, type=Path)
     parser.add_argument("--events", required=True, type=Path)
+    parser.add_argument("--suite", choices=["core", "evasion", "all"], default="core",
+                        help="core = scenario python-subprocess-capture-v1 (default); "
+                             "evasion adds scenario capture-evasion-v1 cases")
     args = parser.parse_args()
 
     fixture = args.fixture_dir.resolve()
@@ -87,6 +180,8 @@ def main() -> int:
     false_path = shutil.which("false")
     if not false_path:
         raise SystemExit("required false executable is unavailable")
+    if not shutil.which("true") or not Path("/bin/true").exists():
+        raise SystemExit("required /bin/true executable is unavailable")
     git_path = shutil.which("git")
     if not git_path:
         raise SystemExit("required git executable is unavailable")
@@ -96,29 +191,39 @@ def main() -> int:
     python_code = "import subprocess; subprocess.run(['git', 'log', '-n', '1'], check=False)"
     # Use a local fixture repo and a deliberately explicit expected argv shape.
     with event_path.open("w", encoding="utf-8") as handle:
+        scenario_ids = []
+        if args.suite in ("core", "all"):
+            scenario_ids.append("python-subprocess-capture-v1")
+        if args.suite in ("evasion", "all"):
+            scenario_ids.append("capture-evasion-v1")
         emit(handle, {
             "record_type": "supervisor_metadata",
             "schema_version": 1,
-            "scenario_id": "python-subprocess-capture-v1",
+            "scenario_id": "+".join(scenario_ids),
+            "suite": args.suite,
             "python": sys.executable,
             "git_path_expected": git_path,
             "fixture_dir": str(fixture),
         })
 
-        run_case(handle, case_id="path_echo", argv=["echo", "hello"])
-        run_case(handle, case_id="absolute_echo", argv=["/bin/echo", "absolute"])
-        run_case(
-            handle,
-            case_id="shell_pipeline",
-            argv=["/bin/sh", "-c", "/bin/echo pipeline | /usr/bin/wc -l"],
-        )
-        run_case(handle, case_id="nonzero_exit", argv=[false_path], expected_returncode=1)
-        run_case(
-            handle,
-            case_id="python_spawns_git",
-            argv=[sys.executable, "-c", python_code],
-            cwd=fixture,
-        )
+        if args.suite in ("core", "all"):
+            run_case(handle, case_id="path_echo", argv=["echo", "hello"])
+            run_case(handle, case_id="absolute_echo", argv=["/bin/echo", "absolute"])
+            run_case(
+                handle,
+                case_id="shell_pipeline",
+                argv=["/bin/sh", "-c", "/bin/echo pipeline | /usr/bin/wc -l"],
+            )
+            run_case(handle, case_id="nonzero_exit", argv=[false_path], expected_returncode=1)
+            run_case(
+                handle,
+                case_id="python_spawns_git",
+                argv=[sys.executable, "-c", python_code],
+                cwd=fixture,
+            )
+
+        if args.suite in ("evasion", "all"):
+            run_evasion_cases(handle, fixture)
 
         before_exists = watched.exists()
         before_hash = sha256_file(watched) if before_exists else None

@@ -125,10 +125,15 @@ python3 tools/report.py \
 
 The fixture script refuses to reuse an existing Git repository, preventing accidental mixing of observations across experiments. If you run as root without `SUDO_UID`/`SUDO_GID`, the tool refuses to run the target unless you pass `--allow-root-target` — use that override only inside an isolated test environment.
 
+## Scenario suites
+
+- **Core** (`--suite core`, default): the six cases above, scenario `python-subprocess-capture-v1`.
+- **Evasion** (`--suite evasion` or `ACB_SUITE=all ./run_experiment.sh`): scenario `capture-evasion-v1` ([workflow/scenario-v2.yaml](workflow/scenario-v2.yaml)) — shell `-c` indirection, the `execveat` syscall, double-fork daemonization (which orphans the real worker), a burst of 20 short-lived processes, argv deliberately beyond the oracle's 8×95-byte bounds (the truncation flag is the expected observation), and direct execution of a shell script. On macOS, run everything inside a Multipass Ubuntu VM — see [docs/MACOS_VM.md](docs/MACOS_VM.md).
+
 ## Roadmap
 
-- **Recorder adapters** — auditd, BCC/bpftrace `execsnoop`, Tetragon, Falco, and agent recorders such as DEPOSE and Tracekit ([adapter proposal template](.github/ISSUE_TEMPLATE/recorder_adapter.md)).
-- **Scenario families** — shell `-c` indirection, `execveat`, double-fork/daemonization, very short-lived processes, argv beyond the 8×95-byte bound, script-vs-binary execution. Session interruption, secret redaction, and tamper detection become separate families after the Linux oracle is validated.
+- **Recorder adapters** — first two implemented: [BCC `execsnoop` and auditd](adapters/README.md). Next: Tetragon, Falco, and agent recorders such as DEPOSE and Tracekit ([adapter proposal template](.github/ISSUE_TEMPLATE/recorder_adapter.md)).
+- **Scenario families** — evasion suite implemented (above), pending host validation. Session interruption, secret redaction, and tamper detection become separate families after the Linux oracle is validated.
 - **First validated host run** — publish kernel/distribution/compiler versions, capabilities, raw JSONL, and the report (see [VALIDATION.md](VALIDATION.md)).
 - **macOS** — phase 2, not implemented.
 
