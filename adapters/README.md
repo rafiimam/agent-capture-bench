@@ -20,20 +20,35 @@ One JSON object per line, one line per successful process execution:
 | `argv` | Argument vector as captured, in order, including `argv[0]`. If the recorder truncates arguments, preserve the truncated values as-is; do not pad or guess. |
 | `pid` / `ppid` | Process and parent process IDs as reported. Use `0` only when the recorder genuinely does not report the value. |
 
-Comparison (in `tools/report.py`) matches on executable **basename + exact
-captured argv**. PID/timing correlation is not implemented yet, so an adapter
-cannot gain or lose credit through timestamps — only through what it captured.
+Comparison (in `tools/report.py`, matcher `normalized-match-v1`) matches on
+executable **basename**, then tiers: exact argv tuple → whitespace-collapsed
+joined argv → prefix match at the oracle's truncation bound (only when
+`args_truncated`) → quote/whitespace-tolerant comparison. The stricter
+basename + exact-argv result is still reported (`strict_matched_event_count`)
+for comparability with earlier published runs, and every unmatched oracle
+event carries a machine-readable reason (`representation_difference_*` or
+`no_recorder_evidence`). PID/timing correlation is not implemented yet, so an
+adapter cannot gain or lose credit through timestamps — only through what it
+captured.
 
 ## Included adapters
 
-| Adapter | Recorder | Collection |
-|---|---|---|
-| [`execsnoop.py`](execsnoop.py) | BCC `execsnoop` / `execsnoop-bpfcc` | `sudo execsnoop-bpfcc \| tee execsnoop.txt` during the run |
-| [`auditd.py`](auditd.py) | Linux audit framework | Load the execve/execveat audit rule *before* the run, export with `ausearch -k agentcap` after (see the adapter docstring) |
+| Adapter | Recorder | Collection | Validation status |
+|---|---|---|---|
+| [`execsnoop.py`](execsnoop.py) | BCC `execsnoop` / `execsnoop-bpfcc` | `sudo execsnoop-bpfcc \| tee execsnoop.txt` during the run | **Validated 2026-10-20** (Ubuntu 24.04 arm64) |
+| [`auditd.py`](auditd.py) | Linux audit framework | Load the execve/execveat audit rule *before* the run, export with `ausearch -k agentcap` after (see the adapter docstring) | Implemented, not yet run end-to-end |
+| [`tetragon.py`](tetragon.py) | Cilium Tetragon | `sudo tetra getevents -o json --types PROCESS_EXEC \| tee tetragon.jsonl` during the run | **Unvalidated** — layout follows Tetragon docs; confirm against a real capture before publishing |
+| [`falco.py`](falco.py) | Falco (JSON output) | Needs an unconditional execve/execveat rule; Falco does not log these by default (see docstring) | **Unvalidated** — and scope-limited to what its rules surface |
+| [`osquery.py`](osquery.py) | osquery `process_events` | `sudo osqueryi --json "SELECT * FROM process_events"` with the BPF/audit events publisher enabled | **Unvalidated** |
+| [`sysdig.py`](sysdig.py) | Sysdig (JSON) | `sudo sysdig -j evt.type in '(execve, execveat)' \| tee sysdig.jsonl` | **Unvalidated** — schema-tolerant by necessity; verify against `sysdig -l` for your version |
+| [`rr`](https://github.com/rr-project/rr) — no adapter | Deterministic record/replay | n/a | Out of scope so far: rr replays a recorded tree rather than emitting an exec log; an adapter would need a different evidence model |
+| DEPOSE / Tracekit — no adapter yet | Agent-layer recorders | n/a | Blocked on format verification — do not write a parser until a sanitized sample of the native output is available (see [adapter proposal template](../.github/ISSUE_TEMPLATE/recorder_adapter.md)); guessing a format would fabricate evidence |
 
-Both take `--input` (native log) and `--output` (canonical JSONL), print a
+All adapters take `--input` (native log) and `--output` (canonical JSONL), print a
 summary including how many lines/events were skipped, and exit nonzero only on
-I/O or usage errors. Skips are reported, never silent.
+I/O or usage errors. Skips are reported, never silent. **Unvalidated adapters
+exist to be corrected on real hosts**; publishing a comparison from one without
+a confirmatory run violates the classification discipline.
 
 ## Running a comparison end-to-end
 
