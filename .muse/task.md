@@ -1,3 +1,3 @@
-# IDE task — 2026-11-16T14:48:13.283Z
+# IDE task — 2026-11-16T14:55:31.477Z
 
-hello
+can you check the full code and find the scope where to upgrade
