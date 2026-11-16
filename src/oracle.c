@@ -85,15 +85,53 @@ static int handle_event(void *ctx, void *data, size_t size)
     return 0;
 }
 
+static char bpf_object_path[4096];
+
+/* Resolve the BPF object path in this order:
+ *   1. --bpf-object PATH (explicit override)
+ *   2. <directory of /proc/self/exe>/oracle.bpf.o            (installed alongside)
+ *   3. <directory of /proc/self/exe>/../build/oracle.bpf.o   (make output layout)
+ *   4. "build/oracle.bpf.o"                                  (cwd-relative legacy)
+ */
+static const char *resolve_bpf_object(const char *override_path)
+{
+    char exe_link[4096];
+    char *slash;
+    ssize_t len;
+    const char *suffixes[] = {"/oracle.bpf.o", "/../build/oracle.bpf.o"};
+
+    if (override_path)
+        return override_path;
+    len = readlink("/proc/self/exe", exe_link, sizeof(exe_link) - 1);
+    if (len > 0) {
+        exe_link[len] = '\0';
+        slash = strrchr(exe_link, '/');
+        if (slash) {
+            *slash = '\0';
+            for (size_t i = 0; i < sizeof(suffixes) / sizeof(suffixes[0]); i++) {
+                snprintf(bpf_object_path, sizeof(bpf_object_path), "%s%s",
+                         exe_link, suffixes[i]);
+                if (access(bpf_object_path, R_OK) == 0)
+                    return bpf_object_path;
+            }
+        }
+    }
+    return "build/oracle.bpf.o";
+}
+
 static void usage(const char *program)
 {
     fprintf(stderr,
-        "Usage: %s --output FILE [--allow-root-target] -- COMMAND [ARG ...]\n"
+        "Usage: %s --output FILE [--bpf-object PATH] [--allow-root-target] -- COMMAND [ARG ...]\n"
         "\n"
         "Attach the eBPF oracle, then execute COMMAND as the target process.\n"
         "The target and its descendants are observed; unrelated process events\n"
         "are filtered out. If invoked through sudo, the target is dropped back\n"
-        "to SUDO_UID/SUDO_GID before it is released.\n",
+        "to SUDO_UID/SUDO_GID before it is released.\n"
+        "\n"
+        "The BPF object is resolved from --bpf-object, otherwise relative to this\n"
+        "binary (alongside it, or ../build/oracle.bpf.o), otherwise from the\n"
+        "current directory as build/oracle.bpf.o.\n",
         program);
 }
 
@@ -169,6 +207,7 @@ static int drop_to_sudo_user(void)
 int main(int argc, char **argv)
 {
     const char *output_path = NULL;
+    const char *bpf_object_override = NULL;
     bool allow_root_target = false;
     int separator = -1;
     for (int i = 1; i < argc; i++) {
@@ -178,6 +217,8 @@ int main(int argc, char **argv)
         }
         if (strcmp(argv[i], "--output") == 0 && i + 1 < argc) {
             output_path = argv[++i];
+        } else if (strcmp(argv[i], "--bpf-object") == 0 && i + 1 < argc) {
+            bpf_object_override = argv[++i];
         } else if (strcmp(argv[i], "--allow-root-target") == 0) {
             allow_root_target = true;
         } else {
@@ -207,10 +248,11 @@ int main(int argc, char **argv)
     (void)fcntl(fileno(out), F_SETFD, FD_CLOEXEC);
     struct sink sink = {.out = out, .sequence = 0};
 
-    struct bpf_object *obj = bpf_object__open_file("build/oracle.bpf.o", NULL);
+    const char *bpf_object = resolve_bpf_object(bpf_object_override);
+    struct bpf_object *obj = bpf_object__open_file(bpf_object, NULL);
     long open_err = libbpf_get_error(obj);
     if (open_err) {
-        fprintf(stderr, "error: opening build/oracle.bpf.o: %s\n",
+        fprintf(stderr, "error: opening %s: %s\n", bpf_object,
                 strerror((int)-open_err));
         fclose(out);
         return 1;
