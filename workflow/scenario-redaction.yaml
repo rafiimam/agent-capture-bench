@@ -1,0 +1,37 @@
+# Scenario redaction-probes-v1 — Horizon 3: secret redaction
+#
+# Purpose: measure whether recorders redact synthetic secrets in observed
+# command lines, and whether redaction (or its absence) is detectable from
+# the recorder's own output. This is the seam that matters most for
+# AI-agent execution logs, where API tokens routinely end up in argv.
+#
+# The marker below is SYNTHETIC and has never been a real credential.
+# Do NOT substitute a real-looking or real token in this scenario: the
+# point is a stable, greppable, provably-fake marker. The oracle captures
+# argv for measurement, so the marker appears in oracle-events.jsonl by
+# design; treat all artifacts from this suite as synthetic.
+#
+# Run:  ACB_SUITE=redaction ./run_experiment.sh
+scenario_id: redaction-probes-v1
+version: 1
+steps:
+  - case_id: secret_in_argv
+    description: "echo with the synthetic marker in argv"
+    argv: ["/bin/echo", "--token=FAKE-ACB-sk-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1"]
+    expected_returncode: 0
+    probes: "argv-visible synthetic secret; oracle must capture it"
+  - case_id: secret_argv_overflow
+    description: "synthetic marker placed inside a single argument beyond the oracle's 95-byte capture bound"
+    argv: ["/bin/echo", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA--token=FAKE-ACB-sk-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1"]
+    expected_returncode: 0
+    probes: "truncation interplay: does the recorder redact when the secret is only partially visible, and does it preserve truncation uncertainty?"
+  - case_id: secret_in_env
+    description: "marker passed via environment variable, not argv"
+    env: {ACB_FAKE_TOKEN: "FAKE-ACB-sk-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1"}
+    argv: ["/bin/echo", "env-marker-case"]
+    expected_returncode: 0
+    probes: "env-capturing recorders only; the oracle does not capture environment"
+classification_guidance:
+  - "Marker present in recorder argv -> recorder did not redact (state this; do not call it a defect — redaction is not universally guaranteed)."
+  - "Marker absent in recorder argv -> undetermined between redaction and non-capture; a redaction marker (e.g. [REDACTED], ***) disambiguates redaction."
+  - "Never upgrade an ambiguous observation to a capture failure classification."

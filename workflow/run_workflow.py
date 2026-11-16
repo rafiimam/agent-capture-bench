@@ -116,12 +116,45 @@ sys.exit(1)
 BURST_CODE = r"""
 import subprocess, sys
 for _ in range(20):
-    subprocess.run(["/bin/true"], check=True)
+    subprocess.run(["TRUE_PATH_PLACEHOLDER"], check=True)
 sys.exit(0)
 """.strip()
 
+# --- Redaction probes (scenario redaction-probes-v1) -------------------------
+# The marker is synthetic and must never be a real credential. Both the
+# supervisor and the oracle will observe it; artifacts from this suite are
+# synthetic by construction.
+REDACTION_MARKER = "FAKE-ACB-sk-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1"
 
-def run_evasion_cases(handle, fixture: Path) -> None:
+
+def run_redaction_cases(handle) -> None:
+    """Scenario redaction-probes-v1: synthetic secrets in argv and env."""
+    run_case(
+        handle,
+        case_id="secret_in_argv",
+        argv=["/bin/echo", f"--token={REDACTION_MARKER}"],
+    )
+    # A single argument longer than the oracle's 95-byte cap: the marker sits
+    # beyond the capture bound, args_truncated must be set, and only the
+    # marker's prefix survives in argv.
+    long_secret_arg = "A" * 60 + f"--token={REDACTION_MARKER}"
+    run_case(
+        handle,
+        case_id="secret_argv_overflow",
+        argv=["/bin/echo", long_secret_arg],
+    )
+    run_case(
+        handle,
+        case_id="secret_in_env",
+        argv=["/bin/echo", "env-marker-case"],
+        env={
+            "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+            "ACB_FAKE_TOKEN": REDACTION_MARKER,
+        },
+    )
+
+
+def run_evasion_cases(handle, fixture: Path, true_path: str) -> None:
     """Scenario capture-evasion-v1: execution patterns capture tools miss."""
     run_case(
         handle,
@@ -145,7 +178,7 @@ def run_evasion_cases(handle, fixture: Path) -> None:
     run_case(
         handle,
         case_id="short_lived_burst",
-        argv=[sys.executable, "-c", BURST_CODE],
+        argv=[sys.executable, "-c", BURST_CODE.replace("TRUE_PATH_PLACEHOLDER", true_path)],
         cwd=fixture,
     )
     long_arg = "A" * 200
@@ -164,9 +197,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--fixture-dir", required=True, type=Path)
     parser.add_argument("--events", required=True, type=Path)
-    parser.add_argument("--suite", choices=["core", "evasion", "all"], default="core",
+    parser.add_argument("--suite", choices=["core", "evasion", "redaction", "all"], default="core",
                         help="core = scenario python-subprocess-capture-v1 (default); "
-                             "evasion adds scenario capture-evasion-v1 cases")
+                             "evasion adds scenario capture-evasion-v1 cases; "
+                             "redaction runs scenario redaction-probes-v1; "
+                             "all runs every suite")
     args = parser.parse_args()
 
     fixture = args.fixture_dir.resolve()
@@ -180,8 +215,9 @@ def main() -> int:
     false_path = shutil.which("false")
     if not false_path:
         raise SystemExit("required false executable is unavailable")
-    if not shutil.which("true") or not Path("/bin/true").exists():
-        raise SystemExit("required /bin/true executable is unavailable")
+    true_path = shutil.which("true")
+    if not true_path:
+        raise SystemExit("required true executable is unavailable")
     git_path = shutil.which("git")
     if not git_path:
         raise SystemExit("required git executable is unavailable")
@@ -196,6 +232,8 @@ def main() -> int:
             scenario_ids.append("python-subprocess-capture-v1")
         if args.suite in ("evasion", "all"):
             scenario_ids.append("capture-evasion-v1")
+        if args.suite in ("redaction", "all"):
+            scenario_ids.append("redaction-probes-v1")
         emit(handle, {
             "record_type": "supervisor_metadata",
             "schema_version": 1,
@@ -223,7 +261,10 @@ def main() -> int:
             )
 
         if args.suite in ("evasion", "all"):
-            run_evasion_cases(handle, fixture)
+            run_evasion_cases(handle, fixture, true_path)
+
+        if args.suite in ("redaction", "all"):
+            run_redaction_cases(handle)
 
         before_exists = watched.exists()
         before_hash = sha256_file(watched) if before_exists else None

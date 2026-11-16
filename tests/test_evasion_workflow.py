@@ -16,6 +16,11 @@ EVASION_CASES = {
 
 
 class EvasionWorkflowTests(unittest.TestCase):
+    # The evasion suite is kernel-specific: raw execveat syscall numbers and
+    # SIGKILL semantics only exist on Linux. On other platforms the suite
+    # fails by construction, so the test is skipped there (CI runs Linux).
+    @unittest.skipIf(not sys.platform.startswith("linux"),
+                     "evasion suite is Linux-specific")
     def test_evasion_suite_completes_all_cases(self) -> None:
         with tempfile.TemporaryDirectory(prefix="acb-evasion-") as tmp:
             work = Path(tmp)
