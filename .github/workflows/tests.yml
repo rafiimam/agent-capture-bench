@@ -23,3 +23,24 @@ jobs:
 
       - name: Run unit tests and syntax checks
         run: make check
+
+  # Compile the eBPF object and the userspace loader. This does NOT load or
+  # attach any BPF program — GitHub runners cannot be assumed to permit it —
+  # but it catches build regressions that the Python job cannot see.
+  bpf-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang llvm libbpf-dev libelf-dev zlib1g-dev make gcc git
+
+      - name: Build oracle
+        run: make
+
+      - name: Shell syntax check
+        run: bash -n run_experiment.sh docs/setup_linux_vm.sh
