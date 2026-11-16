@@ -33,6 +33,10 @@ Use the **Recorder adapter proposal** issue template. Before writing code, ident
 
 An adapter must not fabricate fields the recorder does not provide. A recorder that does not claim OS-level process capture is not defective for missing it — that is a **scope limitation**, not a **capture failure**.
 
+### Publish a validated result
+
+Merged results live in `results/` and must be re-derivable by a reviewer. See [results/README.md](results/README.md) for the required artifacts (raw JSONL for oracle, supervisor, and recorder output; a MANIFEST.md pinning kernel/distro/compiler/recorder versions; per-event adjudication notes for every unmatched event) and the review process. Summaries without raw artifacts are not accepted.
+
 ### Improve the code
 
 Pull requests are welcome for:

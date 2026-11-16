@@ -83,7 +83,7 @@ Recorder comparisons will be published here as adapters land and runs are valida
 |---|---|---|---|---|---|---|---|
 | execsnoop (BCC) | Ubuntu 24.04 bpfcc-tools, 2026-10-20 | ✓* | ✓ | ✓* | ✓ | ✓* | — (filesystem effect, out of scope) |
 
-\* Captured — present in the recorder's stream, but exact-argv matching could not pair it with the oracle event for representation reasons (argv[0] resolved vs as-invoked; space-joined text argv vs the oracle's 95-byte bound). Across the full core+evasion run: 38 oracle exec events, 27 exact matches, 11 representation differences, **zero genuine capture misses**; 224 recorder-only events were system background outside the oracle's tracked tree. Full classification analysis: [VALIDATION.md](VALIDATION.md).
+\* Captured — present in the recorder's stream, but exact-argv matching could not pair it with the oracle event for representation reasons (argv[0] resolved vs as-invoked; space-joined text argv vs the oracle's 95-byte bound). Across the full core+evasion run: 38 oracle exec events, 27 exact matches, 11 representation differences, **zero genuine capture misses**; 224 recorder-only events were system background outside the oracle's tracked tree. Full classification analysis: [VALIDATION.md](VALIDATION.md). The `normalized-match-v1` matcher has since landed (see Roadmap) and is expected to retire the representation-difference caveat; the comparison must be re-validated with it before being re-published.
 
 See [docs/LANDSCAPE.md](docs/LANDSCAPE.md) for the recorders and capture tools this benchmark is designed to evaluate, and what each one claims.
 
@@ -131,12 +131,14 @@ The fixture script refuses to reuse an existing Git repository, preventing accid
 
 - **Core** (`--suite core`, default): the six cases above, scenario `python-subprocess-capture-v1`.
 - **Evasion** (`--suite evasion` or `ACB_SUITE=all ./run_experiment.sh`): scenario `capture-evasion-v1` ([workflow/scenario-v2.yaml](workflow/scenario-v2.yaml)) — shell `-c` indirection, the `execveat` syscall, double-fork daemonization (which orphans the real worker), a burst of 20 short-lived processes, argv deliberately beyond the oracle's 8×95-byte bounds (the truncation flag is the expected observation), and direct execution of a shell script. On macOS, run everything inside a Multipass Ubuntu VM — see [docs/MACOS_VM.md](docs/MACOS_VM.md).
+- **Redaction** (`--suite redaction` or `ACB_SUITE=redaction`): scenario `redaction-probes-v1` ([workflow/scenario-redaction.yaml](workflow/scenario-redaction.yaml)) — synthetic secrets in argv, a synthetic secret inside an argv element longer than the oracle's 95-byte capture bound (truncation interplay), and a marker passed via environment. The marker is synthetic and greppable by design; artifacts from this suite are synthetic. **Implemented, not yet host-validated.**
 
 ## Roadmap
 
-- **Recorder adapters** — first two implemented: [BCC `execsnoop` and auditd](adapters/README.md). Next: Tetragon, Falco, and agent recorders such as DEPOSE and Tracekit ([adapter proposal template](.github/ISSUE_TEMPLATE/recorder_adapter.md)).
-- **Scenario families** — evasion suite implemented (above), pending host validation. Session interruption, secret redaction, and tamper detection become separate families after the Linux oracle is validated.
-- **First validated host run** — publish kernel/distribution/compiler versions, capabilities, raw JSONL, and the report (see [VALIDATION.md](VALIDATION.md)).
+- **Recorder adapters** — implemented and status-tracked in [adapters/README.md](adapters/README.md): BCC `execsnoop` (validated 2026-10-20, first comparison published), auditd, Tetragon, Falco, osquery, Sysdig (implemented with parser tests; **not yet validated on a live host — no comparison may be published from them until then**). rr and the agent-layer recorders (DEPOSE, Tracekit) are pending format verification — adapters will not guess native formats. ([adapter proposal template](.github/ISSUE_TEMPLATE/recorder_adapter.md))
+- **Scenario families** — evasion suite implemented (above), pending host validation. Redaction probes implemented (above), pending host validation. Session interruption, tamper/integrity, and namespace attribution are specified in [docs/SCENARIO_FAMILIES.md](docs/SCENARIO_FAMILIES.md).
+- **Comparison methodology** — the `normalized-match-v1` matcher has landed in [tools/report.py](tools/report.py): tiered matching (exact → collapsed-token → truncation-prefix → quote-tolerant), per-event unmatched classification, and the strict-exact count retained for comparability. The execsnoop comparison must be re-published with it (the raw outputs predate the registry and were not retained).
+- **Published results registry** — [results/](results/README.md) defines the submission protocol for re-derivable, community-inspectable comparisons; nothing published yet.
 - **macOS** — phase 2, not implemented.
 
 Pre-written starter issues are collected in [docs/INITIAL_ISSUES.md](docs/INITIAL_ISSUES.md).

@@ -47,6 +47,8 @@ After Issue 1 is resolved, a second person should reproduce the result on a diff
 
 ## Issue 3: Test argv truncation and args_truncated flag
 
+> **Status (2026-11-16): implemented via scenario `capture-evasion-v1`** — the `argv_overflow` case runs `/bin/echo` with 12 filler args plus a 200-byte argument; `tools/report.py` checks `args_truncated` at the 8-arg cap. The acceptance criteria still need a published host run and artifact set (see `results/`); closing this on GitHub should wait for that.
+
 **Labels:** `testing`
 
 **Description:**
@@ -110,6 +112,8 @@ Implement an adapter that maps a recorder's native output to the canonical `exec
 ---
 
 ## Issue 6: Resolve hardcoded BPF object path
+
+> **Status (2026-11-16): fixed.** `agentcap-oracle` accepts `--bpf-object PATH` and resolves the object relative to `/proc/self/exe` (alongside the binary, or `../build/`), falling back to cwd-relative `build/oracle.bpf.o`. Skeleton embedding was not adopted to avoid a hard `bpftool` build dependency. **Pending verification on a real Linux host before close.**
 
 **Labels:** `build`, `enhancement`
 

@@ -1,5 +1,14 @@
 # Validation log
 
+> **2026-11-16 — implemented but NOT host-validated.** The following landed
+> without a kernel run and must not be treated as validated results: the
+> `normalized-match-v1` matcher (it is expected to retire the 11-event
+> representation-difference caveat above — that is a hypothesis until
+> demonstrated), the `redaction-probes-v1` suite, the Tetragon/Falco/osquery/
+> Sysdig adapters, and `--bpf-object`. Nothing in this file may be extended
+> with their outcomes until they are run on a real host; a comparison
+> published from unvalidated code violates the classification discipline.
+
 ## First real-host validation — 2026-10-20
 
 The eBPF oracle was built, loaded, and run against the core scenario on a

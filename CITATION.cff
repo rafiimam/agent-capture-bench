@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: AgentCaptureBench
+message: If you use AgentCaptureBench, please cite it as below.
+type: software
+authors:
+  - name: Rafi Imam
+version: 0.1.0
+date-released: 2026-11-16
+license: MIT
+repository-code: https://github.com/rafiimam/agent-capture-bench
+abstract: >-
+  A ground-truth benchmark for process-capture tools on Linux. An eBPF oracle
+  observes process execution at kernel tracepoints; recorder-under-test
+  outputs are compared against that ground truth under a four-way
+  classification discipline (conformant / capture failure / scope limitation /
+  undetermined), with no composite scores.
+keywords:
+  - eBPF
+  - benchmark
+  - process-capture
+  - observability
+  - security-audit
