@@ -77,13 +77,18 @@ Scenario `python-subprocess-capture-v1` ([workflow/scenario.yaml](workflow/scena
 
 ## Results
 
-Recorder comparisons will be published here as adapters land and runs are validated. No composite scores — coverage, field accuracy, ordering/correlation, redaction, integrity, and overhead are reported separately, with exact recorder versions, permissions, platform, and configuration pinned per run.
+Recorder comparisons are published with their raw artifacts in [results/](results/README.md) — executables as captured, no composite scores. Coverage, field accuracy, ordering/correlation, redaction, integrity, and overhead are reported separately, with exact recorder versions, permissions, platform, and configuration pinned per run.
 
 | Recorder | Version | `path_echo` | `absolute_echo` | `shell_pipeline` | `nonzero_exit` | `python_spawns_git` | `file_modification` |
 |---|---|---|---|---|---|---|---|
-| execsnoop (BCC) | Ubuntu 24.04 bpfcc-tools, 2026-10-20 | ✓* | ✓ | ✓* | ✓ | ✓* | — (filesystem effect, out of scope) |
+| execsnoop (BCC) | Ubuntu 24.04 bpfcc-tools 0.29.1, 2026-10-20 & 2026-11-16 (aarch64) | ✓* | ✓ | ✓* | ✓ | ✓* | — (filesystem effect, out of scope) |
 
-\* Captured — present in the recorder's stream, but exact-argv matching could not pair it with the oracle event for representation reasons (argv[0] resolved vs as-invoked; space-joined text argv vs the oracle's 95-byte bound). Across the full core+evasion run: 38 oracle exec events, 27 exact matches, 11 representation differences, **zero genuine capture misses**; 224 recorder-only events were system background outside the oracle's tracked tree. Full classification analysis: [VALIDATION.md](VALIDATION.md). The `normalized-match-v1` matcher has since landed (see Roadmap) and is expected to retire the representation-difference caveat; the comparison must be re-validated with it before being re-published.
+\* Captured — present in the recorder's stream. The 2026-10-20 capture was re-scored with the `normalized-match-v1` matcher and the fresh 2026-11-16 run validated it end-to-end: 2026-10-20: 27 exact matches + 7 normalized = **34/38 paired**; 2026-11-16: 29 exact + 8 normalized = **37/41 paired**. In both runs, all unmatched events adjudicated as representation differences **except one**: the `execveat`-spawned `git log -n 1` child, which `execsnoop-bpfcc` does not see at all — this build/configuration attaches a kprobe to `sys_execve` only (mechanism-confirmed in the tool source). Per the classification discipline this is a **scope limitation of this build**, not a capture failure. Full adjudication with raw artifacts: [results/execsnoop-bpfcc-2026-10-20/](results/execsnoop-bpfcc-2026-10-20/), [results/execsnoop-bpfcc-2026-11-16/](results/execsnoop-bpfcc-2026-11-16/). See [VALIDATION.md](VALIDATION.md).
+
+**Published runs** (re-derivable from raw artifacts — see the `MANIFEST.md` in each):
+
+- [results/execsnoop-bpfcc-2026-10-20/](results/execsnoop-bpfcc-2026-10-20/) — 2026-10-20 capture (`ACB_SUITE=all`), re-scored 2026-11-16 with `normalized-match-v1` (34/38 matched; 4 adjudicated, incl. the execveat scope limitation)
+- [results/execsnoop-bpfcc-2026-11-16/](results/execsnoop-bpfcc-2026-11-16/) — fresh run (`ACB_SUITE=all`) validating the matcher and the redaction suite 3/3 on a real host (37/41 matched)
 
 See [docs/LANDSCAPE.md](docs/LANDSCAPE.md) for the recorders and capture tools this benchmark is designed to evaluate, and what each one claims.
 

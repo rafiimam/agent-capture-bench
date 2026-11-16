@@ -33,6 +33,10 @@ host-validation log (only entries there represent runs on real kernels).
   re-derivable comparisons (nothing published yet).
 - **CI:** `bpf-build` job (Ubuntu clang BPF compile of `oracle.bpf.o` +
   userspace loader) alongside the Python job.
+- `results/execsnoop-bpfcc-2026-10-20/` and `results/execsnoop-bpfcc-2026-11-16/`:
+  raw, re-derivable execsnoop comparisons (path-sanitized; execveat scope
+  limitation of `execsnoop-bpfcc` documented with mechanism analysis; redaction
+  family validated 3/3 on a real host in the latter).
 - `CITATION.cff`, this changelog.
 
 ### Changed
@@ -45,10 +49,10 @@ host-validation log (only entries there represent runs on real kernels).
   the redaction family.
 
 ### Not yet done
-- Linux host validation of the new matcher (it is expected to retire the
-  11-event "representation difference" caveat from the execsnoop comparison —
-  this must be demonstrated, not assumed).
-- End-to-end runs of the auditd and new adapters; cross-distro/kernel matrix.
+- Third-party reproduction of the two execsnoop results entries (first-party
+  only so far: author's Multipass Ubuntu 24.04 aarch64, kernel 6.8.0-147).
+- End-to-end runs of the auditd and new adapters (Tetragon, Falco, osquery,
+  Sysdig) — still unvalidated; no comparison may be published from them.
+- Cross-distro/kernel matrix (x86_64, Fedora, Debian; other kernels).
 - Session-interruption, tamper/integrity, and namespace scenario families
   (design in docs/SCENARIO_FAMILIES.md).
-- Published entries in `results/`.

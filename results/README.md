@@ -4,10 +4,7 @@ This directory is where validated benchmark runs are published, so the
 community can inspect exactly what was measured — the MLPerf-style model: a
 result only counts if the artifacts are reproducible and inspectable.
 
-**No results live here yet.** The first published entry will be the execsnoop
-comparison, re-run with the `normalized-match-v1` matcher and complete
-artifacts (it predates the `results/` registry and the raw outputs were not
-retained in the repository).
+Two entries live here: **[execsnoop-bpfcc-2026-10-20/](execsnoop-bpfcc-2026-10-20/)** (original capture, re-scored with `normalized-match-v1`) and **[execsnoop-bpfcc-2026-11-16/](execsnoop-bpfcc-2026-11-16/)** (fresh end-to-end run validating the matcher and the redaction suite). Both carry raw artifacts, a MANIFEST.md with environment pinning, and per-event adjudication. A third-party re-derivation of either entry on a different kernel/distro is the fastest way to harden them from "author's first-run results" to community-verified.
 
 ## What a published result must include
 
@@ -70,7 +67,9 @@ Rules:
    `classification.md` adjudications.
 3. Merged entries are listed in the PR's results table (README) with a link.
 
-Until this process has produced its first merged entry, no result — including
-the execsnoop numbers in the README — should be read as community-verified;
-they are the author's first-run results with known methodology caveats
-documented in VALIDATION.md.
+Entries in this directory are first-party validated runs (author's host,
+Multipass Ubuntu 24.04 aarch64, kernel 6.8.0-147-generic). They are honestly
+unvalidated by third parties until someone re-derives them on a different
+kernel/distro or independently re-runs the pipeline — that reproduction is
+the fastest way to turn these into community-verified results. The Multipass
+VM details and exact versions are pinned in each MANIFEST.md.

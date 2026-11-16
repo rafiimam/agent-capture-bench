@@ -1,13 +1,49 @@
 # Validation log
 
-> **2026-11-16 — implemented but NOT host-validated.** The following landed
-> without a kernel run and must not be treated as validated results: the
-> `normalized-match-v1` matcher (it is expected to retire the 11-event
-> representation-difference caveat above — that is a hypothesis until
-> demonstrated), the `redaction-probes-v1` suite, the Tetragon/Falco/osquery/
-> Sysdig adapters, and `--bpf-object`. Nothing in this file may be extended
-> with their outcomes until they are run on a real host; a comparison
-> published from unvalidated code violates the classification discipline.
+> **2026-11-16 — two entries below are validated and published in `results/`:**
+> the 2026-10-20 execsnoop comparison re-scored with `normalized-match-v1`
+> (34/38 matched), and a fresh `ACB_SUITE=all` run on 2026-11-16 (37/41
+> matched; kernel 6.8.0-147-generic; all core/evasion/redaction checks
+> true; redaction family validated on a real host). Both reproduced the same
+> execveat finding: `execsnoop-bpfcc` (Ubuntu bpfcc-tools 0.29.1) attaches a
+> kprobe to `sys_execve` only and cannot see execveat-spawned execs.
+> Still NOT validated on any host: the Tetragon, Falco, osquery, and Sysdig
+> adapters — none may produce a published comparison until confirmed against a
+> real capture. Anything not yet run is stated as such; a failed or unmatched
+> run is classified *undetermined* until the oracle side is ruled out.
+
+## Fresh end-to-end run — 2026-11-16 (results published in results/execsnoop-bpfcc-2026-11-16/)
+
+Ubuntu 24.04.5 LTS (aarch64), kernel 6.8.0-147-generic (Multipass VM), clang
+18.1.3 (Ubuntu 1ubuntu1), libbpf 1:1.3.0-2build2, bpfcc-tools
+0.29.1+ds-1ubuntu7, ACB `main` @ 6c6b058, suite `all`
+(`ACB_SUITE=all ./run_experiment.sh`):
+
+- Oracle: **82 events (41 exec, 41 fork)**; supervisor **14/14 steps passed**.
+- Checks: core **10/10 true**; evasion **9/9 true** (incl. 20/20
+  short-lived burst, execveat child seen by the oracle); redaction **3/3
+  true** — first host validation of the family.
+- Redaction analysis: oracle observed the synthetic marker (1 full-argv
+  event; the overflow probe's marker survives only as a prefix at the
+  95-byte bound, `args_truncated` set). The recorder captured the two
+  marker-bearing echo executions **verbatim** (2 events;
+  `marker_present_in_recorder`) — execsnoop-bpfcc does not redact.
+- Recorder comparison (matcher `normalized-match-v1`): 41 oracle execs,
+  **37 paired** (29 strict + 5 token-collapsed + 2 truncation-prefix +
+  1 shell-tolerant); 4 unmatched — 3 truncated python `-c` probes with
+  same-PID recorder evidence (representation), 1 execveat-spawned git child
+  absent (scope limitation, mechanism-confirmed — execsnoop-bpfcc hooks
+  `sys_execve` only). 61 recorder-only events (system background).
+
+## Re-score of the 2026-10-20 capture with normalized-match-v1 — 2026-11-16
+
+Same capture, new matcher (see [results/execsnoop-bpfcc-2026-10-20/](results/execsnoop-bpfcc-2026-10-20/)):
+oracle **38** execs; **34 paired** (27 strict + 5 token-collapsed +
+1 truncation-prefix + 1 shell-tolerant); 4 unmatched with the same two
+adjudicated classes as the fresh run. 224 recorder-only events under strict
+matching became 217 after normalized matching. Raw artifacts and full
+adjudication are published with the entry; the original exact-match report is
+retained as `report-exact-match-original.json`.
 
 ## First real-host validation — 2026-10-20
 
@@ -88,17 +124,22 @@ with `adapters/execsnoop.py` (251 recorder events) and compared with
   fragmented by execsnoop's space-joined text format and bounded at 95 bytes
   by the oracle, so exact-argv matching cannot pair them; the argv-overflow
   event, where the oracle caps at 8 args and execsnoop prints all 14.
-  In substance, every execution the oracle observed is present in
-  execsnoop's stream.
+
+  **Superseded by the 2026-11-16 re-score above (results/execsnoop-bpfcc-2026-10-20/):
+  34/38 paired; 4 remained unmatched — 3 truncated python `-c` probes
+  (representation; same-PID evidence) and the execveat-spawned git child,
+  which is **absent** from the recorder's stream (scope limitation —
+  execsnoop-bpfcc hooks `sys_execve` only). The "every execution is present"
+  phrasing does not hold for the execveat path.**
 - **224 recorder events had no oracle counterpart** — expected and not a
   defect on either side: execsnoop is system-wide (VM background services,
   fixture setup, the harness's own shell commands), while the oracle tracks
   only the workflow's process tree.
 - Methodology note: exact-argv matching understates agreement when the two
-  sides bound or render argv differently. A normalization-aware matcher
-  (argv[0] basename equivalence, prefix matching at truncation bounds) is
-  the identified next improvement; until it lands, comparisons are published
-  with this classification analysis rather than a bare match count.
+  sides bound or render argv differently. This landed as the
+  `normalized-match-v1` matcher (see the 2026-11-16 re-score and fresh run
+  above) and the comparison is now published with tier counts plus per-event
+  adjudication in `results/`, not as a bare match count.
 
 ## Authoring-container checks — 2026-10-16
 

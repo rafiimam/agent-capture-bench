@@ -1,0 +1,2339 @@
+{
+  "all_oracle_checks_observed": true,
+  "evasion_checks": {
+    "argv_overflow_truncation_flagged": true,
+    "daemon_grandchild_orphaned": true,
+    "daemon_grandchild_seen": true,
+    "execveat_git_child_seen": true,
+    "execveat_probe_seen": true,
+    "script_exec_seen": true,
+    "shell_c_git_shell_seen": true,
+    "short_lived_burst_all_seen": true,
+    "short_lived_burst_true_count": 20
+  },
+  "failed_supervisor_steps": [],
+  "interpretation_warning": "A missing oracle event can indicate a test, permission, configuration, or oracle problem; classify it as undetermined until those possibilities are ruled out. This report does not declare a recorder defect or a novel finding.",
+  "metadata": {
+    "arg_bytes_limit": 95,
+    "argv_limit": 8,
+    "clock": "CLOCK_MONOTONIC_NS",
+    "oracle": "agentcapturebench-ebpf-prototype",
+    "record_type": "metadata",
+    "schema_version": 1,
+    "target_pid": 27139
+  },
+  "observed_checks": {
+    "absolute_echo_seen": true,
+    "file_change_recorded": true,
+    "git_child_exec_seen": true,
+    "git_parent_is_python_probe": true,
+    "nonzero_command_seen": true,
+    "path_echo_seen": true,
+    "python_probe_seen": true,
+    "shell_pipeline_echo_seen": true,
+    "shell_pipeline_shell_seen": true,
+    "shell_pipeline_wc_seen": true
+  },
+  "oracle_event_count": 76,
+  "oracle_event_type_counts": {
+    "exec": 38,
+    "fork": 38
+  },
+  "recorder_comparison": {
+    "matched_event_count": 27,
+    "missed_events": [
+      {
+        "argv": [
+          "echo",
+          "hello"
+        ],
+        "filename_basename": "echo"
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "/bin/echo pipeline | /usr/bin/wc -l"
+        ],
+        "filename_basename": "sh"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import subprocess; subprocess.run(['git', 'log', '-n', '1'], check=False)"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "git",
+          "log",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "git",
+          "log",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "git",
+          "log",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "git log -n 1"
+        ],
+        "filename_basename": "sh"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import ctypes, os, sys\nSYS_execveat = {\"x86_64\": 322, \"aarch64\": 281, \"arm64\": 281}[os.uname()."
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import os, sys, time\nmarker = os.path.join(os.getcwd(), \"daemon-marker.txt\")\nif os.path.exists("
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import subprocess, sys\nfor _ in range(20):\n    subprocess.run([\"/bin/true\"], check=True)\nsys.ex"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/bin/echo",
+          "arg0",
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6"
+        ],
+        "filename_basename": "echo"
+      }
+    ],
+    "note": "Matching is by executable basename and exact captured argv; PID/timing matching is not implemented.",
+    "oracle_exec_event_count": 38,
+    "recorder_exec_event_count": 251,
+    "schema": "canonical-exec-jsonl-v1",
+    "unexpected_events": [
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "echo",
+          "loadavg:",
+          "\"$(eval",
+          "\"cat",
+          "/proc/loadavg",
+          "|",
+          "cut",
+          "-d",
+          "'",
+          "'",
+          "-f1-3\")\"&",
+          "echo",
+          "mem_usage:",
+          "\"$(eval",
+          "\"free",
+          "-b",
+          "|",
+          "grep",
+          "'Mem:'",
+          "|",
+          "awk",
+          "'{printf",
+          "\\$"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/free",
+          "-b"
+        ],
+        "filename_basename": "free"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "Mem:"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$2}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/proc/loadavg"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/awk",
+          "{printf",
+          "$3}"
+        ],
+        "filename_basename": "awk"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=size"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/df",
+          "-t",
+          "ext4",
+          "-t",
+          "vfat",
+          "--total",
+          "-B1",
+          "--output=used"
+        ],
+        "filename_basename": "df"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "-f1-3"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/cat",
+          "/etc/os-release"
+        ],
+        "filename_basename": "cat"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/nproc"
+        ],
+        "filename_basename": "nproc"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/cut",
+          "-d",
+          "\"",
+          "-f2"
+        ],
+        "filename_basename": "cut"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/grep",
+          "PRETTY_NAME"
+        ],
+        "filename_basename": "grep"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/uptime",
+          "-p"
+        ],
+        "filename_basename": "uptime"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/head",
+          "-n1",
+          "/proc/stat"
+        ],
+        "filename_basename": "head"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/usr/bin/tail",
+          "-c+4"
+        ],
+        "filename_basename": "tail"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/sbin/ip",
+          "-brief",
+          "-family",
+          "inet",
+          "address",
+          "show",
+          "scope",
+          "global"
+        ],
+        "filename_basename": "ip"
+      },
+      {
+        "argv": [
+          "/usr/bin/bash",
+          "./run_experiment.sh"
+        ],
+        "filename_basename": "bash"
+      },
+      {
+        "argv": [
+          "/usr/bin/dirname",
+          "--",
+          "./run_experiment.sh"
+        ],
+        "filename_basename": "dirname"
+      },
+      {
+        "argv": [
+          "/usr/bin/date",
+          "-u",
+          "+%Y%m%dT%H%M%S"
+        ],
+        "filename_basename": "date"
+      },
+      {
+        "argv": [
+          "/usr/bin/mkdir",
+          "<acb-repo>/.work/run-20261020T163015-27119"
+        ],
+        "filename_basename": "mkdir"
+      },
+      {
+        "argv": [
+          "/usr/bin/make",
+          "-C",
+          "<acb-repo>"
+        ],
+        "filename_basename": "make"
+      },
+      {
+        "argv": [
+          "/usr/bin/uname",
+          "-m"
+        ],
+        "filename_basename": "uname"
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "cc",
+          "-print-multiarch",
+          "2>/dev/null"
+        ],
+        "filename_basename": "sh"
+      },
+      {
+        "argv": [
+          "/usr/bin/cc",
+          "-print-multiarch"
+        ],
+        "filename_basename": "cc"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "<acb-repo>/workflow/prepare_fixture.py",
+          "--dir",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "init",
+          "--quiet",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "-C",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture",
+          "config",
+          "user.name",
+          "AgentCaptureBench",
+          "Test"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "-C",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture",
+          "config",
+          "user.email",
+          "agentcapturebench@example.invalid"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "-C",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture",
+          "add",
+          "seed.txt"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "-C",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture",
+          "commit",
+          "--quiet",
+          "-m",
+          "fixture",
+          "seed"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/usr/bin/sudo",
+          "<acb-repo>/build/agentcap-oracle",
+          "--output",
+          "--",
+          "/usr/bin/python3",
+          "<acb-repo>/workflow/run_workflow.py",
+          "--suite",
+          "all",
+          "--fixture-dir",
+          "<acb-repo>/.work/run-20261020T163015-27119/fixture",
+          "--events",
+          "<acb-repo>/.work/run-20261020T163015-27119/supervisor-events.jsonl"
+        ],
+        "filename_basename": "sudo"
+      },
+      {
+        "argv": [
+          "/usr/bin/echo",
+          "hello"
+        ],
+        "filename_basename": "echo"
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "/bin/echo",
+          "pipeline",
+          "|",
+          "/usr/bin/wc",
+          "-l"
+        ],
+        "filename_basename": "sh"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import",
+          "subprocess;",
+          "subprocess.run([git,",
+          "log,",
+          "-n,",
+          "1],",
+          "check=False)"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "log",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "log",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "git"
+      },
+      {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "git",
+          "log",
+          "-n",
+          "1"
+        ],
+        "filename_basename": "sh"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import",
+          "ctypes,",
+          "os,",
+          "sysnSYS_execveat",
+          "=",
+          "{x86_64:",
+          "322,",
+          "aarch64:",
+          "281,",
+          "arm64:",
+          "281}[os.uname().machine]nlibc",
+          "=",
+          "ctypes.CDLL(None,"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import",
+          "os,",
+          "sys,",
+          "timenmarker",
+          "=",
+          "os.path.join(os.getcwd(),",
+          "daemon-marker.txt)nif",
+          "os.path.exists(marker):n",
+          "os.unlink(marker)nfi"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-c",
+          "import",
+          "subprocess,",
+          "sysnfor",
+          "_",
+          "in",
+          "range(20):n",
+          "subprocess.run([/bin/true],",
+          "check=True)nsys.exit(0)"
+        ],
+        "filename_basename": "python3"
+      },
+      {
+        "argv": [
+          "/bin/echo",
+          "arg0",
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10",
+          "arg11",
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        ],
+        "filename_basename": "echo"
+      },
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "<acb-repo>/tools/report.py",
+          "--oracle",
+          "<acb-repo>/.work/run-20261020T163015-27119/oracle-events.jsonl",
+          "--supervisor",
+          "--output",
+          "<acb-repo>/.work/run-20261020T163015-27119/oracle-report.json"
+        ],
+        "filename_basename": "python3"
+      }
+    ]
+  },
+  "report_schema_version": 1,
+  "scenario_id": "python-subprocess-capture-v1",
+  "status": "oracle_observation_only",
+  "supervisor_metadata": {
+    "fixture_dir": "<acb-repo>/.work/run-20261020T163015-27119/fixture",
+    "git_path_expected": "/usr/bin/git",
+    "python": "/usr/bin/python3",
+    "record_type": "supervisor_metadata",
+    "scenario_id": "python-subprocess-capture-v1+capture-evasion-v1",
+    "schema_version": 1,
+    "suite": "all"
+  },
+  "supervisor_step_count": 11,
+  "supervisor_steps_passed": 11
+}

@@ -1,0 +1,251 @@
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 26961, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 26975, "ppid": 26973, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 26977, "ppid": 26973, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 26976, "ppid": 26971, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 26978, "ppid": 26971, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 26979, "ppid": 26973, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 26969, "ppid": 26965, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 26980, "ppid": 26971, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 26988, "ppid": 26974, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 26985, "ppid": 26974, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 26986, "ppid": 26972, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 26987, "ppid": 26972, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 26970, "ppid": 26965, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 26993, "ppid": 26992, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 26989, "ppid": 26981, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 26995, "ppid": 26992, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 26994, "ppid": 26992, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 26997, "ppid": 26991, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 26996, "ppid": 26990, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 26998, "ppid": 26991, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 26999, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 26999, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27000, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27019, "ppid": 27015, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27013, "ppid": 27005, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27020, "ppid": 27015, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27033, "ppid": 27021, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27022, "ppid": 27016, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27023, "ppid": 27008, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27032, "ppid": 27021, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27026, "ppid": 27016, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27027, "ppid": 27018, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27029, "ppid": 27014, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27030, "ppid": 27014, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27011, "ppid": 27005, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27031, "ppid": 27014, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27034, "ppid": 27017, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27035, "ppid": 27028, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27036, "ppid": 27028, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27024, "ppid": 27016, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27037, "ppid": 27028, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27025, "ppid": 27008, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27038, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27038, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27039, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27057, "ppid": 27055, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27059, "ppid": 27055, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27065, "ppid": 27047, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27056, "ppid": 27044, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27062, "ppid": 27052, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27060, "ppid": 27055, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27069, "ppid": 27058, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27070, "ppid": 27050, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27063, "ppid": 27047, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27053, "ppid": 27044, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27073, "ppid": 27066, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27074, "ppid": 27066, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27054, "ppid": 27044, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27068, "ppid": 27050, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27076, "ppid": 27067, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27075, "ppid": 27066, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27071, "ppid": 27061, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27064, "ppid": 27052, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27072, "ppid": 27061, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27077, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27077, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27080, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27094, "ppid": 27090, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27089, "ppid": 27083, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27098, "ppid": 27090, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27087, "ppid": 27083, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27093, "ppid": 27091, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27096, "ppid": 27090, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27104, "ppid": 27092, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27095, "ppid": 27091, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27105, "ppid": 27092, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27107, "ppid": 27103, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27097, "ppid": 27091, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27110, "ppid": 27102, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27109, "ppid": 27103, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27111, "ppid": 27108, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27112, "ppid": 27108, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27114, "ppid": 27106, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27115, "ppid": 27113, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27116, "ppid": 27113, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27117, "ppid": 27113, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27118, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27118, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/bash", "./run_experiment.sh"], "filename": "/usr/bin/bash", "pid": 27119, "ppid": 3003, "type": "exec"}
+{"argv": ["/usr/bin/dirname", "--", "./run_experiment.sh"], "filename": "/usr/bin/dirname", "pid": 27121, "ppid": 27120, "type": "exec"}
+{"argv": ["/usr/bin/date", "-u", "+%Y%m%dT%H%M%S"], "filename": "/usr/bin/date", "pid": 27123, "ppid": 27119, "type": "exec"}
+{"argv": ["/usr/bin/mkdir", "<acb-repo>/.work/run-20261020T163015-27119"], "filename": "/usr/bin/mkdir", "pid": 27124, "ppid": 27119, "type": "exec"}
+{"argv": ["/usr/bin/make", "-C", "<acb-repo>"], "filename": "/usr/bin/make", "pid": 27125, "ppid": 27119, "type": "exec"}
+{"argv": ["/usr/bin/uname", "-m"], "filename": "/usr/bin/uname", "pid": 27126, "ppid": 27125, "type": "exec"}
+{"argv": ["/bin/sh", "-c", "cc", "-print-multiarch", "2>/dev/null"], "filename": "/bin/sh", "pid": 27127, "ppid": 27125, "type": "exec"}
+{"argv": ["/usr/bin/cc", "-print-multiarch"], "filename": "/usr/bin/cc", "pid": 27128, "ppid": 27127, "type": "exec"}
+{"argv": ["/usr/bin/python3", "<acb-repo>/workflow/prepare_fixture.py", "--dir", "<acb-repo>/.work/run-20261020T163015-27119/fixture"], "filename": "/usr/bin/python3", "pid": 27129, "ppid": 27119, "type": "exec"}
+{"argv": ["/usr/bin/git", "init", "--quiet", "<acb-repo>/.work/run-20261020T163015-27119/fixture"], "filename": "/usr/bin/git", "pid": 27130, "ppid": 27129, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261020T163015-27119/fixture", "config", "user.name", "AgentCaptureBench", "Test"], "filename": "/usr/bin/git", "pid": 27131, "ppid": 27129, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261020T163015-27119/fixture", "config", "user.email", "agentcapturebench@example.invalid"], "filename": "/usr/bin/git", "pid": 27132, "ppid": 27129, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261020T163015-27119/fixture", "add", "seed.txt"], "filename": "/usr/bin/git", "pid": 27133, "ppid": 27129, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261020T163015-27119/fixture", "commit", "--quiet", "-m", "fixture", "seed"], "filename": "/usr/bin/git", "pid": 27134, "ppid": 27129, "type": "exec"}
+{"argv": ["/usr/bin/sudo", "<acb-repo>/build/agentcap-oracle", "--output", "--", "/usr/bin/python3", "<acb-repo>/workflow/run_workflow.py", "--suite", "all", "--fixture-dir", "<acb-repo>/.work/run-20261020T163015-27119/fixture", "--events", "<acb-repo>/.work/run-20261020T163015-27119/supervisor-events.jsonl"], "filename": "/usr/bin/sudo", "pid": 27136, "ppid": 27119, "type": "exec"}
+{"argv": ["/usr/bin/python3", "<acb-repo>/workflow/run_workflow.py", "--suite", "all", "--fixture-dir", "<acb-repo>/.work/run-20261020T163015-27119/fixture", "--events", "<acb-repo>/.work/run-20261020T163015-27119/supervisor-events.jsonl"], "filename": "/usr/bin/python3", "pid": 27139, "ppid": 27138, "type": "exec"}
+{"argv": ["/usr/bin/echo", "hello"], "filename": "/usr/bin/echo", "pid": 27140, "ppid": 27139, "type": "exec"}
+{"argv": ["/bin/echo", "absolute"], "filename": "/bin/echo", "pid": 27141, "ppid": 27139, "type": "exec"}
+{"argv": ["/bin/sh", "-c", "/bin/echo", "pipeline", "|", "/usr/bin/wc", "-l"], "filename": "/bin/sh", "pid": 27142, "ppid": 27139, "type": "exec"}
+{"argv": ["/bin/echo", "pipeline"], "filename": "/bin/echo", "pid": 27143, "ppid": 27142, "type": "exec"}
+{"argv": ["/usr/bin/wc", "-l"], "filename": "/usr/bin/wc", "pid": 27144, "ppid": 27142, "type": "exec"}
+{"argv": ["/usr/bin/false"], "filename": "/usr/bin/false", "pid": 27145, "ppid": 27139, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "subprocess;", "subprocess.run([git,", "log,", "-n,", "1],", "check=False)"], "filename": "/usr/bin/python3", "pid": 27146, "ppid": 27139, "type": "exec"}
+{"argv": ["/usr/bin/git", "log", "-n", "1"], "filename": "/usr/bin/git", "pid": 27147, "ppid": 27146, "type": "exec"}
+{"argv": ["/bin/sh", "-c", "git", "log", "-n", "1"], "filename": "/bin/sh", "pid": 27148, "ppid": 27139, "type": "exec"}
+{"argv": ["/usr/bin/git", "log", "-n", "1"], "filename": "/usr/bin/git", "pid": 27149, "ppid": 27148, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "ctypes,", "os,", "sysnSYS_execveat", "=", "{x86_64:", "322,", "aarch64:", "281,", "arm64:", "281}[os.uname().machine]nlibc", "=", "ctypes.CDLL(None,"], "filename": "/usr/bin/python3", "pid": 27150, "ppid": 27139, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "os,", "sys,", "timenmarker", "=", "os.path.join(os.getcwd(),", "daemon-marker.txt)nif", "os.path.exists(marker):n", "os.unlink(marker)nfi"], "filename": "/usr/bin/python3", "pid": 27152, "ppid": 27139, "type": "exec"}
+{"argv": ["/bin/echo", "daemon-echo"], "filename": "/bin/echo", "pid": 27154, "ppid": 1, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "subprocess,", "sysnfor", "_", "in", "range(20):n", "subprocess.run([/bin/true],", "check=True)nsys.exit(0)"], "filename": "/usr/bin/python3", "pid": 27155, "ppid": 27139, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27156, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27157, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27158, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27159, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27160, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27161, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27162, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27163, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27164, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27165, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27166, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27167, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27168, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27169, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27170, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27171, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27172, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27173, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27174, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/true"], "filename": "/bin/true", "pid": 27175, "ppid": 27155, "type": "exec"}
+{"argv": ["/bin/echo", "arg0", "arg1", "arg2", "arg3", "arg4", "arg5", "arg6", "arg7", "arg8", "arg9", "arg10", "arg11", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"], "filename": "/bin/echo", "pid": 27176, "ppid": 27139, "type": "exec"}
+{"argv": ["<acb-repo>/.work/run-20261020T163015-27119/fixture/helper.sh"], "filename": "<acb-repo>/.work/run-20261020T163015-27119/fixture/helper.sh", "pid": 27177, "ppid": 27139, "type": "exec"}
+{"argv": ["/usr/bin/python3", "<acb-repo>/tools/report.py", "--oracle", "<acb-repo>/.work/run-20261020T163015-27119/oracle-events.jsonl", "--supervisor", "--output", "<acb-repo>/.work/run-20261020T163015-27119/oracle-report.json"], "filename": "/usr/bin/python3", "pid": 27178, "ppid": 27119, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27179, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27185, "ppid": 27183, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27186, "ppid": 27183, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27198, "ppid": 27197, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27189, "ppid": 27184, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27199, "ppid": 27197, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27200, "ppid": 27187, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27201, "ppid": 27187, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27191, "ppid": 27184, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27192, "ppid": 27184, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27202, "ppid": 27187, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27206, "ppid": 27203, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27210, "ppid": 27204, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27209, "ppid": 27207, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27214, "ppid": 27208, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27215, "ppid": 27208, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27216, "ppid": 27208, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27211, "ppid": 27204, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27213, "ppid": 27205, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27212, "ppid": 27205, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27217, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27217, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27218, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27227, "ppid": 27222, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27236, "ppid": 27231, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27237, "ppid": 27231, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27241, "ppid": 27228, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27225, "ppid": 27222, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27242, "ppid": 27228, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27244, "ppid": 27238, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27243, "ppid": 27228, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27250, "ppid": 27239, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27245, "ppid": 27229, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27247, "ppid": 27230, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27252, "ppid": 27239, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27246, "ppid": 27229, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27248, "ppid": 27230, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27251, "ppid": 27235, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27249, "ppid": 27230, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27253, "ppid": 27240, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27254, "ppid": 27240, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27255, "ppid": 27240, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27256, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27256, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27257, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27273, "ppid": 27272, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27275, "ppid": 27272, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27282, "ppid": 27269, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27264, "ppid": 27260, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27284, "ppid": 27271, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27280, "ppid": 27274, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27276, "ppid": 27272, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27283, "ppid": 27269, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27281, "ppid": 27277, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27288, "ppid": 27271, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27266, "ppid": 27260, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27289, "ppid": 27270, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27287, "ppid": 27270, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27286, "ppid": 27279, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27290, "ppid": 27279, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27291, "ppid": 27285, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27292, "ppid": 27285, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27293, "ppid": 27285, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27294, "ppid": 27270, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27295, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27295, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27296, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27314, "ppid": 27299, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27316, "ppid": 27304, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27315, "ppid": 27304, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27320, "ppid": 27317, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27332, "ppid": 27309, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27325, "ppid": 27307, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27326, "ppid": 27307, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27333, "ppid": 27311, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27327, "ppid": 27318, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27322, "ppid": 27317, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27323, "ppid": 27310, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27319, "ppid": 27310, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27328, "ppid": 27318, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27312, "ppid": 27299, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27321, "ppid": 27310, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27324, "ppid": 27317, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27329, "ppid": 27313, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27330, "ppid": 27313, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27331, "ppid": 27313, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27334, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27334, "ppid": 1123, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "echo", "loadavg:", "\"$(eval", "\"cat", "/proc/loadavg", "|", "cut", "-d", "'", "'", "-f1-3\")\"&", "echo", "mem_usage:", "\"$(eval", "\"free", "-b", "|", "grep", "'Mem:'", "|", "awk", "'{printf", "\\$"], "filename": "/bin/bash", "pid": 27335, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f1-3"], "filename": "/usr/bin/cut", "pid": 27344, "ppid": 27339, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/proc/loadavg"], "filename": "/usr/bin/cat", "pid": 27342, "ppid": 27339, "type": "exec"}
+{"argv": ["/usr/bin/uptime", "-p"], "filename": "/usr/bin/uptime", "pid": 27357, "ppid": 27351, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=used"], "filename": "/usr/bin/df", "pid": 27358, "ppid": 27348, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27360, "ppid": 27348, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27353, "ppid": 27350, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-c+4"], "filename": "/usr/bin/tail", "pid": 27359, "ppid": 27351, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27352, "ppid": 27350, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$2}"], "filename": "/usr/bin/awk", "pid": 27355, "ppid": 27350, "type": "exec"}
+{"argv": ["/usr/bin/grep", "Mem:"], "filename": "/usr/bin/grep", "pid": 27367, "ppid": 27349, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/etc/os-release"], "filename": "/usr/bin/cat", "pid": 27361, "ppid": 27356, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{printf", "$3}"], "filename": "/usr/bin/awk", "pid": 27369, "ppid": 27349, "type": "exec"}
+{"argv": ["/usr/bin/grep", "PRETTY_NAME"], "filename": "/usr/bin/grep", "pid": 27362, "ppid": 27356, "type": "exec"}
+{"argv": ["/usr/bin/tail", "-n", "1"], "filename": "/usr/bin/tail", "pid": 27371, "ppid": 27364, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "\"", "-f2"], "filename": "/usr/bin/cut", "pid": 27363, "ppid": 27356, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n1", "/proc/stat"], "filename": "/usr/bin/head", "pid": 27372, "ppid": 27365, "type": "exec"}
+{"argv": ["/usr/bin/nproc"], "filename": "/usr/bin/nproc", "pid": 27368, "ppid": 27354, "type": "exec"}
+{"argv": ["/usr/bin/df", "-t", "ext4", "-t", "vfat", "--total", "-B1", "--output=size"], "filename": "/usr/bin/df", "pid": 27370, "ppid": 27364, "type": "exec"}
+{"argv": ["/usr/bin/free", "-b"], "filename": "/usr/bin/free", "pid": 27366, "ppid": 27349, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/bin/bash", "pid": 27373, "ppid": 1123, "type": "exec"}
+{"argv": ["/usr/sbin/ip", "-brief", "-family", "inet", "address", "show", "scope", "global"], "filename": "/usr/sbin/ip", "pid": 27373, "ppid": 1123, "type": "exec"}

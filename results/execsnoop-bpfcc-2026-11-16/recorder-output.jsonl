@@ -1,0 +1,98 @@
+{"argv": ["/usr/bin/as", "-I", "include", "--gdwarf-5", "-EL", "-mabi=lp64", "-o", "/tmp/ccXVdB8g.o", "/tmp/cc69S4Z0.s"], "filename": "/usr/bin/as", "pid": 86452, "ppid": 86450, "type": "exec"}
+{"argv": ["/usr/libexec/gcc/aarch64-linux-gnu/13/collect2", "-plugin", "/usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so", "-plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper", "-plugin-opt=-fresolution=/tmp/ccZSW4Gs.res", "-plugin-opt=-pass-through=-lgcc", "-plugin-opt=-pass-through=-lgcc_s", "-plugin-opt=-pass-through=-lc", "-plugin-opt=-pass-through=-lgcc", "-plugin-opt=-pass-through=-lgcc_s", "--build-id", "--eh-frame-hdr", "--hash-style=gnu", "--as-needed", "-dynamic-linker", "/lib/ld-linux-aarch64.so.1", "-X", "-EL", "-maarch64linux", "--fix-cortex-a53-843419"], "filename": "/usr/libexec/gcc/aarch64-linux-gnu/13/collect2", "pid": 86453, "ppid": 86450, "type": "exec"}
+{"argv": ["/usr/bin/ld", "-plugin", "/usr/libexec/gcc/aarch64-linux-gnu/13/liblto_plugin.so", "-plugin-opt=/usr/libexec/gcc/aarch64-linux-gnu/13/lto-wrapper", "-plugin-opt=-fresolution=/tmp/ccZSW4Gs.res", "-plugin-opt=-pass-through=-lgcc", "-plugin-opt=-pass-through=-lgcc_s", "-plugin-opt=-pass-through=-lc", "-plugin-opt=-pass-through=-lgcc", "-plugin-opt=-pass-through=-lgcc_s", "--build-id", "--eh-frame-hdr", "--hash-style=gnu", "--as-needed", "-dynamic-linker", "/lib/ld-linux-aarch64.so.1", "-X", "-EL", "-maarch64linux", "--fix-cortex-a53-843419"], "filename": "/usr/bin/ld", "pid": 86454, "ppid": 86453, "type": "exec"}
+{"argv": ["<acb-repo>/workflow/prepare_fixture.py", "--dir"], "filename": "<acb-repo>/workflow/prepare_fixture.py", "pid": 86455, "ppid": 86440, "type": "exec"}
+{"argv": ["/usr/bin/git", "init", "--quiet", "<acb-repo>/.work/run-20261116T171511-86440/fixture"], "filename": "/usr/bin/git", "pid": 86456, "ppid": 86455, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261116T171511-86440/fixture", "config", "user.name", "AgentCaptureBench", "Test"], "filename": "/usr/bin/git", "pid": 86457, "ppid": 86455, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261116T171511-86440/fixture", "config", "user.email", "agentcapturebench@example.invalid"], "filename": "/usr/bin/git", "pid": 86458, "ppid": 86455, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261116T171511-86440/fixture", "add", "seed.txt"], "filename": "/usr/bin/git", "pid": 86459, "ppid": 86455, "type": "exec"}
+{"argv": ["/usr/bin/git", "-C", "<acb-repo>/.work/run-20261116T171511-86440/fixture", "commit", "--quiet", "-m", "fixture", "seed"], "filename": "/usr/bin/git", "pid": 86460, "ppid": 86455, "type": "exec"}
+{"argv": ["/usr/bin/sudo", "--output", "--", "/usr/bin/python3", "<acb-repo>/workflow/run_workflow.py", "--suite", "all", "--fixture-dir", "--events", "<acb-repo>/.work/run-20261116T171511-86440/supervisor-events.jsonl"], "filename": "/usr/bin/sudo", "pid": 86462, "ppid": 86440, "type": "exec"}
+{"argv": ["/usr/bin/python3", "<acb-repo>/workflow/run_workflow.py", "--suite", "all", "--fixture-dir", "<acb-repo>/.work/run-20261116T171511-86440/fixture", "--events", "<acb-repo>/.work/run-20261116T171511-86440/supervisor-events.jsonl"], "filename": "/usr/bin/python3", "pid": 86464, "ppid": 86463, "type": "exec"}
+{"argv": ["/usr/bin/echo", "hello"], "filename": "/usr/bin/echo", "pid": 86465, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/echo", "absolute"], "filename": "/bin/echo", "pid": 86466, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/sh", "-c", "/bin/echo", "pipeline", "|", "/usr/bin/wc", "-l"], "filename": "/bin/sh", "pid": 86467, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/echo", "pipeline"], "filename": "/bin/echo", "pid": 86468, "ppid": 86467, "type": "exec"}
+{"argv": ["/usr/bin/wc", "-l"], "filename": "/usr/bin/wc", "pid": 86469, "ppid": 86467, "type": "exec"}
+{"argv": ["/usr/bin/false"], "filename": "/usr/bin/false", "pid": 86470, "ppid": 86464, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "subprocess;", "subprocess.run([git,", "log,", "-n,", "1],", "check=False)"], "filename": "/usr/bin/python3", "pid": 86471, "ppid": 86464, "type": "exec"}
+{"argv": ["/usr/bin/git", "log", "-n", "1"], "filename": "/usr/bin/git", "pid": 86472, "ppid": 86471, "type": "exec"}
+{"argv": ["/bin/sh", "-c", "git", "log", "-n", "1"], "filename": "/bin/sh", "pid": 86473, "ppid": 86464, "type": "exec"}
+{"argv": ["/usr/bin/git", "log", "-n", "1"], "filename": "/usr/bin/git", "pid": 86474, "ppid": 86473, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "ctypes,", "os,", "sysnSYS_execveat", "=", "{x86_64:", "322,", "aarch64:", "281,", "arm64:", "281}[os.uname().machine]nlibc", "=", "ctypes.CDLL(None,"], "filename": "/usr/bin/python3", "pid": 86475, "ppid": 86464, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "os,", "sys,", "timenmarker", "=", "os.path.join(os.getcwd(),", "daemon-marker.txt)nif", "os.path.exists(marker):n", "os.unlink(marker)nfi"], "filename": "/usr/bin/python3", "pid": 86477, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/echo", "daemon-echo"], "filename": "/bin/echo", "pid": 86479, "ppid": 1, "type": "exec"}
+{"argv": ["/usr/bin/python3", "-c", "import", "subprocess,", "sysnfor", "_", "in", "range(20):n", "subprocess.run([/usr/bin/true],", "check=True)nsys.exit(0)"], "filename": "/usr/bin/python3", "pid": 86480, "ppid": 86464, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86481, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86482, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86483, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86484, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86485, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86486, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86487, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86488, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86489, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86490, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86491, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86492, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86493, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86494, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86495, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86496, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86497, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86498, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86499, "ppid": 86480, "type": "exec"}
+{"argv": ["/usr/bin/true"], "filename": "/usr/bin/true", "pid": 86500, "ppid": 86480, "type": "exec"}
+{"argv": ["/bin/echo", "arg0", "arg1", "arg2", "arg3", "arg4", "arg5", "arg6", "arg7", "arg8", "arg9", "arg10", "arg11", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"], "filename": "/bin/echo", "pid": 86501, "ppid": 86464, "type": "exec"}
+{"argv": ["<acb-repo>/.work/run-20261116T171511-86440/fixture/helper.sh"], "filename": "<acb-repo>/.work/run-20261116T171511-86440/fixture/helper.sh", "pid": 86502, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/echo", "--token=FAKE-ACB-sk-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1"], "filename": "/bin/echo", "pid": 86503, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/echo", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA--token=FAKE-ACB-sk-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1"], "filename": "/bin/echo", "pid": 86504, "ppid": 86464, "type": "exec"}
+{"argv": ["/bin/echo", "env-marker-case"], "filename": "/bin/echo", "pid": 86505, "ppid": 86464, "type": "exec"}
+{"argv": ["<acb-repo>/tools/report.py", "--oracle", "<acb-repo>/.work/run-20261116T171511-86440/oracle-events.jsonl", "--supervisor"], "filename": "<acb-repo>/tools/report.py", "pid": 86506, "ppid": 86440, "type": "exec"}
+{"argv": ["/usr/bin/sudo"], "filename": "/usr/bin/sudo", "pid": 86508, "ppid": 86431, "type": "exec"}
+{"argv": ["/usr/bin/head", "-1"], "filename": "/usr/bin/head", "pid": 86511, "ppid": 86431, "type": "exec"}
+{"argv": ["/usr/bin/ls", "-dt", ".work/run-20261020T161818-12851", ".work/run-20261020T162304-18500", ".work/run-20261020T162512-21137", ".work/run-20261020T163015-27119", ".work/run-20261116T171511-86440"], "filename": "/usr/bin/ls", "pid": 86510, "ppid": 86431, "type": "exec"}
+{"argv": ["/usr/sbin/sshd", "-D", "-R"], "filename": "/usr/sbin/sshd", "pid": 86512, "ppid": 82453, "type": "exec"}
+{"argv": ["/bin/sh", "-c", "--", "/usr/bin/env", "-i", "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "run-parts", "--lsbsysinit", "/etc/update-motd.d", ">", "/r"], "filename": "/bin/sh", "pid": 86514, "ppid": 86512, "type": "exec"}
+{"argv": ["/usr/bin/env", "-i", "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "run-parts", "--lsbsysinit", "/etc/update-motd.d"], "filename": "/usr/bin/env", "pid": 86515, "ppid": 86514, "type": "exec"}
+{"argv": ["/usr/bin/run-parts", "--lsbsysinit", "/etc/update-motd.d"], "filename": "/usr/bin/run-parts", "pid": 86515, "ppid": 86514, "type": "exec"}
+{"argv": ["/usr/bin/uname", "-o"], "filename": "/usr/bin/uname", "pid": 86517, "ppid": 86516, "type": "exec"}
+{"argv": ["/usr/bin/uname", "-r"], "filename": "/usr/bin/uname", "pid": 86518, "ppid": 86516, "type": "exec"}
+{"argv": ["/usr/bin/uname", "-m"], "filename": "/usr/bin/uname", "pid": 86519, "ppid": 86516, "type": "exec"}
+{"argv": ["/usr/bin/find", "/var/lib/landscape/landscape-sysinfo.cache", "-newermt", "now-1", "minutes"], "filename": "/usr/bin/find", "pid": 86522, "ppid": 86521, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/var/lib/landscape/landscape-sysinfo.cache"], "filename": "/usr/bin/cat", "pid": 86523, "ppid": 86521, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/var/cache/motd-news"], "filename": "/usr/bin/cat", "pid": 86525, "ppid": 86524, "type": "exec"}
+{"argv": ["/usr/bin/head", "-n", "10"], "filename": "/usr/bin/head", "pid": 86526, "ppid": 86524, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-c", "-80"], "filename": "/usr/bin/cut", "pid": 86528, "ppid": 86524, "type": "exec"}
+{"argv": ["/usr/bin/tr", "-d", "000-011013014016-037"], "filename": "/usr/bin/tr", "pid": 86527, "ppid": 86524, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/run/motd.d/85-fwupd"], "filename": "/usr/bin/cat", "pid": 86530, "ppid": 86529, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/var/lib/update-notifier/updates-available"], "filename": "/usr/bin/cat", "pid": 86532, "ppid": 86531, "type": "exec"}
+{"argv": ["/usr/bin/find", "/var/lib/update-notifier/updates-available", "-newermt", "now-7", "days"], "filename": "/usr/bin/find", "pid": 86533, "ppid": 86531, "type": "exec"}
+{"argv": ["/usr/bin/grep", "-q", "-m", "1", "."], "filename": "/usr/bin/grep", "pid": 86534, "ppid": 86531, "type": "exec"}
+{"argv": ["/usr/bin/cut", "-d", "-f4"], "filename": "/usr/bin/cut", "pid": 86539, "ppid": 86537, "type": "exec"}
+{"argv": ["/usr/bin/id", "-u"], "filename": "/usr/bin/id", "pid": 86540, "ppid": 86536, "type": "exec"}
+{"argv": ["/usr/lib/ubuntu-release-upgrader/release-upgrade-motd"], "filename": "/usr/lib/ubuntu-release-upgrader/release-upgrade-motd", "pid": 86536, "ppid": 86515, "type": "exec"}
+{"argv": ["/usr/bin/date", "+%s"], "filename": "/usr/bin/date", "pid": 86541, "ppid": 86536, "type": "exec"}
+{"argv": ["/usr/bin/stat", "-c", "%Y", "/var/lib/ubuntu-release-upgrader/release-upgrade-available"], "filename": "/usr/bin/stat", "pid": 86542, "ppid": 86536, "type": "exec"}
+{"argv": ["/usr/bin/expr", "1794839076", "+", "86400"], "filename": "/usr/bin/expr", "pid": 86543, "ppid": 86536, "type": "exec"}
+{"argv": ["/usr/share/unattended-upgrades/update-motd-unattended-upgrades"], "filename": "/usr/share/unattended-upgrades/update-motd-unattended-upgrades", "pid": 86544, "ppid": 86515, "type": "exec"}
+{"argv": ["/usr/bin/find", "/var/lib/update-notifier/hwe-eol", "-newermt", "now-1", "days"], "filename": "/usr/bin/find", "pid": 86546, "ppid": 86545, "type": "exec"}
+{"argv": ["/usr/bin/egrep", "overlayroot|/media/root-ro|/media/root-rw", "/proc/mounts"], "filename": "/usr/bin/egrep", "pid": 86549, "ppid": 86548, "type": "exec"}
+{"argv": ["/usr/bin/grep", "-E", "overlayroot|/media/root-ro|/media/root-rw", "/proc/mounts"], "filename": "/usr/bin/grep", "pid": 86549, "ppid": 86548, "type": "exec"}
+{"argv": ["/usr/bin/sort", "-r"], "filename": "/usr/bin/sort", "pid": 86550, "ppid": 86548, "type": "exec"}
+{"argv": ["/usr/lib/update-notifier/update-motd-fsck-at-reboot"], "filename": "/usr/lib/update-notifier/update-motd-fsck-at-reboot", "pid": 86551, "ppid": 86515, "type": "exec"}
+{"argv": ["/usr/bin/id", "-u"], "filename": "/usr/bin/id", "pid": 86552, "ppid": 86551, "type": "exec"}
+{"argv": ["/usr/bin/stat", "-c", "%Y", "/var/lib/update-notifier/fsck-at-reboot"], "filename": "/usr/bin/stat", "pid": 86553, "ppid": 86551, "type": "exec"}
+{"argv": ["/usr/bin/awk", "{print", "$1}", "/proc/uptime"], "filename": "/usr/bin/awk", "pid": 86555, "ppid": 86554, "type": "exec"}
+{"argv": ["/usr/bin/date", "-d", "now", "-", "472171.69", "seconds", "+%s"], "filename": "/usr/bin/date", "pid": 86554, "ppid": 86551, "type": "exec"}
+{"argv": ["/usr/bin/date", "+%s"], "filename": "/usr/bin/date", "pid": 86556, "ppid": 86551, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/var/lib/update-notifier/fsck-at-reboot"], "filename": "/usr/bin/cat", "pid": 86557, "ppid": 86551, "type": "exec"}
+{"argv": ["/usr/lib/update-notifier/update-motd-reboot-required"], "filename": "/usr/lib/update-notifier/update-motd-reboot-required", "pid": 86558, "ppid": 86515, "type": "exec"}
+{"argv": ["/usr/bin/cat", "/var/run/reboot-required"], "filename": "/usr/bin/cat", "pid": 86559, "ppid": 86558, "type": "exec"}
+{"argv": ["/bin/bash", "-c", "bash", "-lc", "cd <acb-repo> && RUN_DIR=$(ls -dt .work/run-* | head -1) && wc -l /tmp/execs"], "filename": "/bin/bash", "pid": 86561, "ppid": 86560, "type": "exec"}
+{"argv": ["/usr/bin/bash", "-lc", "cd", "<acb-repo>", "&&", "RUN_DIR=$(ls", "-dt", ".work/run-*", "|", "head", "-1)", "&&", "wc", "-l", "/tmp/execsnoop-2026-11-16.txt", "&&", "python3"], "filename": "/usr/bin/bash", "pid": 86561, "ppid": 86560, "type": "exec"}
+{"argv": ["/usr/bin/locale-check", "C.UTF-8"], "filename": "/usr/bin/locale-check", "pid": 86562, "ppid": 86561, "type": "exec"}
+{"argv": ["/usr/bin/locale"], "filename": "/usr/bin/locale", "pid": 86563, "ppid": 86561, "type": "exec"}
+{"argv": ["/usr/bin/head", "-1"], "filename": "/usr/bin/head", "pid": 86567, "ppid": 86565, "type": "exec"}
+{"argv": ["/usr/bin/ls", "-dt", ".work/run-20261020T161818-12851", ".work/run-20261020T162304-18500", ".work/run-20261020T162512-21137", ".work/run-20261020T163015-27119", ".work/run-20261116T171511-86440"], "filename": "/usr/bin/ls", "pid": 86566, "ppid": 86565, "type": "exec"}
+{"argv": ["/usr/bin/python3", "--output"], "filename": "/usr/bin/python3", "pid": 86569, "ppid": 86561, "type": "exec"}
